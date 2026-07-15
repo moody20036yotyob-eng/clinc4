@@ -1,0 +1,50 @@
+[
+  {
+    "id": "doc-001",
+    "name": { "en": "Dr. Ahmed Al-Mansouri", "ar": "د. أحمد المنصوري" },
+    "credentials": { "en": "BDS, MDS (Orthodontics), FRCDC", "ar": "بكالوريوس طب أسنان، ماجستير تقويم، FRCDC" },
+    "specialty": { "en": "Orthodontics & Smile Design", "ar": "تقويم الأسنان وتصميم الابتسامة" },
+    "years": { "en": "18 years of experience", "ar": "١٨ عاماً من الخبرة" },
+    "bio": { "en": "Dr. Al-Mansouri trained in London and Toronto, specialising in invisible aligners and complex orthodontic cases. He has treated over 5,000 patients and is a certified Invisalign provider.", "ar": "تدرّب الدكتور المنصوري في لندن وتورنتو، متخصصاً في المحاذيات الشفافة وحالات التقويم المعقدة. عالج أكثر من ٥٠٠٠ مريض وهو مزوّد معتمد لـ Invisalign." }
+  },
+  {
+    "id": "doc-002",
+    "name": { "en": "Dr. Sara Al-Qahtani", "ar": "د. سارة القحطاني" },
+    "credentials": { "en": "BDS, MSc Implantology (Germany)", "ar": "بكالوريوس طب أسنان، ماجستير زراعة (ألمانيا)" },
+    "specialty": { "en": "Implantology & Oral Surgery", "ar": "زراعة الأسنان وجراحة الفم" },
+    "years": { "en": "14 years of experience", "ar": "١٤ عاماً من الخبرة" },
+    "bio": { "en": "Dr. Al-Qahtani is an expert in dental implants and full-arch restoration. She completed her implantology training in Munich and has placed over 3,000 implants with a 99.2% success rate.", "ar": "متخصصة في زراعة الأسنان وترميم القوس الكامل. أتمّت تدريبها في ميونيخ وقامت بزراعة أكثر من ٣٠٠٠ سن بنسبة نجاح ٩٩.٢٪." }
+  },
+  {
+    "id": "doc-003",
+    "name": { "en": "Dr. Khalid Al-Harbi", "ar": "د. خالد الحربي" },
+    "credentials": { "en": "BDS, Fellowship in Cosmetic Dentistry (USA)", "ar": "بكالوريوس طب أسنان، زمالة في طب الأسنان التجميلي (الولايات المتحدة)" },
+    "specialty": { "en": "Cosmetic Dentistry & Veneers", "ar": "طب الأسنان التجميلي والقشور" },
+    "years": { "en": "12 years of experience", "ar": "١٢ عاماً من الخبرة" },
+    "bio": { "en": "Dr. Al-Harbi is known for his artistry in smile makeovers, specialising in porcelain veneers, teeth whitening, and digital smile design. He has been voted \"Best Cosmetic Dentist\" three years running.", "ar": "معروف بفنّه في تحويل الابتسامات، متخصص في قشور البورسلان وتبييض الأسنان وتصميم الابتسامة الرقمي. صُوِّت له بـ\"أفضل طبيب أسنان تجميلي\" ثلاث سنوات متتالية." }
+  },
+  {
+    "id": "doc-004",
+    "name": { "en": "Dr. Nora Al-Shehri", "ar": "د. نورة الشهري" },
+    "credentials": { "en": "BDS, MPhil Paediatric Dentistry", "ar": "بكالوريوس طب أسنان، ماجستير طب أسنان أطفال" },
+    "specialty": { "en": "Paediatric Dentistry", "ar": "طب أسنان الأطفال" },
+    "years": { "en": "10 years of experience", "ar": "١٠ أعوام من الخبرة" },
+    "bio": { "en": "Dr. Al-Shehri creates a warm, fun environment for young patients. She specialises in preventive dentistry for children, early orthodontic intervention, and managing dental anxiety in kids.", "ar": "تخلق الدكتورة الشهري بيئة دافئة وممتعة للمرضى الصغار. تتخصص في طب الأسنان الوقائي للأطفال والتدخل التقويمي المبكر وإدارة قلق الأسنان لديهم." }
+  },
+  {
+    "id": "doc-005",
+    "name": { "en": "Dr. Mohammed Al-Dosari", "ar": "د. محمد الدوسري" },
+    "credentials": { "en": "BDS, MDS Periodontics", "ar": "بكالوريوس طب أسنان، ماجستير أمراض اللثة" },
+    "specialty": { "en": "Periodontics & Gum Health", "ar": "علاج أمراض اللثة وصحة اللثة" },
+    "years": { "en": "16 years of experience", "ar": "١٦ عاماً من الخبرة" },
+    "bio": { "en": "Dr. Al-Dosari is a leading periodontist specialising in gum disease treatment, bone grafting, and laser gum therapy. He is a certified specialist with the Saudi Dental Society.", "ar": "طبيب أمراض لثة رائد متخصص في علاج أمراض اللثة وزراعة العظام وعلاج اللثة بالليزر. متخصص معتمد لدى الجمعية السعودية لطب الأسنان." }
+  },
+  {
+    "id": "doc-006",
+    "name": { "en": "Dr. Fatima Al-Zahrawi", "ar": "د. فاطمة الزهراوي" },
+    "credentials": { "en": "BDS, Diploma in Endodontics", "ar": "بكالوريوس طب أسنان، دبلوم علاج الجذور" },
+    "specialty": { "en": "Endodontics & Root Canal", "ar": "علاج قنوات الجذر" },
+    "years": { "en": "9 years of experience", "ar": "٩ أعوام من الخبرة" },
+    "bio": { "en": "Dr. Al-Zahrawi uses rotary and laser-assisted techniques to make root canal treatment painless and efficient. She is known for her gentle touch and exceptional success rates.", "ar": "تستخدم الدكتورة الزهراوي تقنيات الحركة والليزر لجعل علاج قناة الجذر غير مؤلم وفعّالاً. معروفة بلمسها اللطيف ومعدلات نجاحها الاستثنائية." }
+  }
+]

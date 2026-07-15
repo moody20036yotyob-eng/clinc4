@@ -1,0 +1,58 @@
+[
+  {
+    "id": "svc-001",
+    "icon": "✨",
+    "name": { "en": "Smile Makeover", "ar": "تحويل الابتسامة" },
+    "description": { "en": "A comprehensive cosmetic treatment plan combining veneers, whitening, and contouring to completely transform your smile in as few as two visits.", "ar": "خطة علاجية تجميلية شاملة تجمع القشور والتبييض والتشكيل لتحويل ابتسامتك كلياً في زيارتين فقط." },
+    "tip": { "en": "Digital Smile Design technology lets you preview your new smile before any treatment begins!", "ar": "تتيح لك تقنية تصميم الابتسامة الرقمي معاينة ابتسامتك الجديدة قبل بدء أي علاج!" }
+  },
+  {
+    "id": "svc-002",
+    "icon": "🦷",
+    "name": { "en": "Dental Implants", "ar": "زراعة الأسنان" },
+    "description": { "en": "Permanent, natural-looking tooth replacements that fuse with your jawbone. Restore full chewing function and confidence with titanium or ceramic implants.", "ar": "بدائل دائمة للأسنان تبدو طبيعية وتندمج مع عظم الفك. استعد وظيفة المضغ الكاملة والثقة بغرسات التيتانيوم أو الخزف." },
+    "tip": { "en": "Dental implants can last a lifetime with proper care and are the closest thing to natural teeth.", "ar": "يمكن أن تدوم زراعة الأسنان مدى الحياة مع العناية المناسبة، وهي أقرب شيء للأسنان الطبيعية." }
+  },
+  {
+    "id": "svc-003",
+    "icon": "😁",
+    "name": { "en": "Teeth Whitening", "ar": "تبييض الأسنان" },
+    "description": { "en": "Professional in-office whitening that delivers results up to 10 shades brighter in a single session. Safe, fast, and long-lasting.", "ar": "تبييض احترافي في العيادة يمنحك نتائج أفتح بـ١٠ درجات في جلسة واحدة. آمن وسريع وطويل الأمد." },
+    "tip": { "en": "Professional whitening is 3× more effective than over-the-counter strips and gentler on enamel.", "ar": "التبييض الاحترافي أكثر فاعلية ٣ مرات من شرائط الصيدلية وأكثر لطفاً على المينا." }
+  },
+  {
+    "id": "svc-004",
+    "icon": "🔬",
+    "name": { "en": "Invisalign & Clear Aligners", "ar": "Invisalign والمحاذيات الشفافة" },
+    "description": { "en": "Straighten your teeth discreetly with custom clear aligners. No metal, no wires — just a confident smile at every stage of treatment.", "ar": "قوّم أسنانك بشكل غير ملحوظ باستخدام محاذيات شفافة مخصصة. بدون معدن أو أسلاك — فقط ابتسامة واثقة في كل مرحلة من العلاج." },
+    "tip": { "en": "Most Invisalign cases are completed in 6–18 months, often faster than traditional braces.", "ar": "تكتمل معظم حالات Invisalign في غضون ٦-١٨ شهراً، وغالباً أسرع من التقويم التقليدي." }
+  },
+  {
+    "id": "svc-005",
+    "icon": "💎",
+    "name": { "en": "Porcelain Veneers", "ar": "قشور البورسلان" },
+    "description": { "en": "Ultra-thin ceramic shells bonded to your teeth to correct shape, colour, and spacing. Minimal preparation required and results that last 15+ years.", "ar": "أغلفة خزفية رفيعة للغاية تُلصق على أسنانك لتصحيح الشكل واللون والمسافات. تحضير أدنى ونتائج تدوم أكثر من ١٥ عاماً." },
+    "tip": { "en": "Veneers are stain-resistant — your smile stays brilliantly white even after coffee and tea.", "ar": "قشور الأسنان مقاومة للبقع — تبقى ابتسامتك بيضاء ساطعة حتى بعد القهوة والشاي." }
+  },
+  {
+    "id": "svc-006",
+    "icon": "🌿",
+    "name": { "en": "Gum Disease Treatment", "ar": "علاج أمراض اللثة" },
+    "description": { "en": "Advanced periodontal therapy including deep cleaning, laser gum treatment, and bone grafting. Treat gingivitis and periodontitis before they affect your overall health.", "ar": "علاج دواعي متقدم يشمل التنظيف العميق وعلاج اللثة بالليزر وزراعة العظام. عالج التهاب اللثة قبل أن يؤثر على صحتك العامة." },
+    "tip": { "en": "Gum disease is linked to heart disease and diabetes — healthy gums protect your whole body.", "ar": "أمراض اللثة مرتبطة بأمراض القلب والسكري — اللثة الصحية تحمي جسمك كله." }
+  },
+  {
+    "id": "svc-007",
+    "icon": "🩺",
+    "name": { "en": "Root Canal Treatment", "ar": "علاج قناة الجذر" },
+    "description": { "en": "Pain-free endodontic therapy using rotary and laser-assisted techniques to save infected teeth. Modern root canals are comfortable and completed in 1–2 visits.", "ar": "علاج لبّ الأسنان بدون ألم باستخدام تقنيات الحركة والليزر لإنقاذ الأسنان المصابة. علاج القنوات الحديث مريح ويكتمل في ١-٢ زيارة." },
+    "tip": { "en": "Saving a natural tooth with a root canal is always better than extraction — it preserves your bone and bite.", "ar": "إنقاذ السن الطبيعي بعلاج قناة الجذر أفضل دائماً من الخلع — يحافظ على العظم والإطباق." }
+  },
+  {
+    "id": "svc-008",
+    "icon": "🪥",
+    "name": { "en": "Children's Dentistry", "ar": "طب أسنان الأطفال" },
+    "description": { "en": "Gentle, fun dental care for children from infancy through adolescence. We build healthy habits early with preventive treatments, sealants, and fluoride applications.", "ar": "رعاية أسنان لطيفة وممتعة للأطفال من الرضاعة حتى المراهقة. نبني عادات صحية مبكرة بالعلاجات الوقائية والسدادات والفلورايد." },
+    "tip": { "en": "The first dental visit should happen when the first tooth appears — usually around age 1.", "ar": "يجب أن تكون أول زيارة لطبيب الأسنان عند ظهور أول سن — عادةً حوالي السنة الأولى." }
+  }
+]

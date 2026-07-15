@@ -1,0 +1,101 @@
+{
+  "hero": {
+    "headline": { "en": "Your Smile, Our Masterpiece", "ar": "ابتسامتك، تحفتنا الفنية" },
+    "subheadline": { "en": "World-class dental care blending artistry with advanced science — for a lifetime of confidence.", "ar": "رعاية طب أسنان عالمية تجمع بين الفن والعلم المتقدم — لثقة تدوم مدى الحياة." },
+    "cta": { "en": "Book Your Visit", "ar": "احجز زيارتك" }
+  },
+  "about": {
+    "story": {
+      "title": { "en": "Our Story", "ar": "قصتنا" },
+      "p1": { "en": "Founded over two decades ago, [Clinic Name] began with a simple vision: to make world-class dental care accessible, comfortable, and genuinely transformative.", "ar": "تأسست [اسم العيادة] قبل أكثر من عقدين برؤية بسيطة: جعل رعاية طب الأسنان العالمية في متناول الجميع ومريحة وتحويلية حقاً." },
+      "p2": { "en": "We believe that a healthy smile is more than aesthetics — it is the foundation of confidence and well-being.", "ar": "نؤمن بأن الابتسامة الصحية أكثر من مجرد جماليات — فهي أساس الثقة والرفاهية." }
+    },
+    "team": {
+      "title": { "en": "Our Medical Team", "ar": "فريقنا الطبي" },
+      "subtitle": { "en": "Internationally trained specialists committed to your smile.", "ar": "متخصصون مدرّبون دولياً ملتزمون بابتسامتك." },
+      "members": []
+    }
+  },
+  "faq": {
+    "items": [
+      {
+        "id": "faq-001",
+        "cat": "general",
+        "q": { "en": "What are your opening hours?", "ar": "ما هي ساعات العمل؟" },
+        "a": { "en": "We are open Saturday through Thursday from 9:00 AM to 9:00 PM. We are closed on Fridays.", "ar": "نعمل من السبت إلى الخميس من الساعة ٩:٠٠ صباحاً حتى ٩:٠٠ مساءً. نغلق أيام الجمعة." }
+      },
+      {
+        "id": "faq-002",
+        "cat": "general",
+        "q": { "en": "Do I need a referral to book an appointment?", "ar": "هل أحتاج إلى إحالة لحجز موعد؟" },
+        "a": { "en": "No referral is needed. You can book directly through our website, by phone, or via WhatsApp.", "ar": "لا تحتاج إلى إحالة. يمكنك الحجز مباشرة عبر موقعنا أو الهاتف أو واتساب." }
+      },
+      {
+        "id": "faq-003",
+        "cat": "general",
+        "q": { "en": "Is parking available at the clinic?", "ar": "هل يتوفر موقف سيارات في العيادة؟" },
+        "a": { "en": "Yes, we have free parking available for all patients in the building's dedicated lot.", "ar": "نعم، لدينا موقف سيارات مجاني لجميع المرضى في الموقف المخصص للمبنى." }
+      },
+      {
+        "id": "faq-004",
+        "cat": "treatment",
+        "q": { "en": "Does teeth whitening hurt?", "ar": "هل تبييض الأسنان مؤلم؟" },
+        "a": { "en": "Professional whitening is generally comfortable. Some patients experience mild temporary sensitivity, which subsides within 24 hours. We use desensitising agents to minimise discomfort.", "ar": "التبييض الاحترافي مريح بشكل عام. يشعر بعض المرضى بحساسية خفيفة مؤقتة تختفي في غضون ٢٤ ساعة. نستخدم عوامل مزيلة للحساسية لتقليل الانزعاج." }
+      },
+      {
+        "id": "faq-005",
+        "cat": "treatment",
+        "q": { "en": "How long does Invisalign treatment take?", "ar": "كم تستغرق مدة علاج Invisalign؟" },
+        "a": { "en": "Most Invisalign cases are completed in 6 to 18 months depending on complexity. During your consultation, your doctor will give you a precise estimate based on your digital scan.", "ar": "تكتمل معظم حالات Invisalign في غضون ٦ إلى ١٨ شهراً حسب التعقيد. خلال استشارتك، سيعطيك طبيبك تقديراً دقيقاً بناءً على مسحك الرقمي." }
+      },
+      {
+        "id": "faq-006",
+        "cat": "treatment",
+        "q": { "en": "Are dental implants painful?", "ar": "هل زراعة الأسنان مؤلمة؟" },
+        "a": { "en": "The implant procedure is performed under local anaesthesia, so you will feel no pain during treatment. Post-operative discomfort is typically mild and managed with standard pain relief.", "ar": "يتم إجراء عملية الزراعة تحت التخدير الموضعي، لذا لن تشعر بأي ألم أثناء العلاج. الانزعاج بعد العملية خفيف عادةً ويُعالج بمسكنات الألم القياسية." }
+      },
+      {
+        "id": "faq-007",
+        "cat": "payment",
+        "q": { "en": "Do you accept insurance?", "ar": "هل تقبلون التأمين الصحي؟" },
+        "a": { "en": "We work with major insurance providers in the region. Please call us with your insurance details before your appointment and we will confirm coverage.", "ar": "نتعامل مع كبرى شركات التأمين في المنطقة. يرجى الاتصال بنا بتفاصيل تأمينك قبل موعدك وسنؤكد التغطية." }
+      },
+      {
+        "id": "faq-008",
+        "cat": "payment",
+        "q": { "en": "Do you offer payment plans?", "ar": "هل تقدمون خطط دفع؟" },
+        "a": { "en": "Yes, we offer flexible monthly payment plans for treatments over a certain amount. Our patient coordinator will discuss options during your consultation.", "ar": "نعم، نقدم خطط دفع شهرية مرنة للعلاجات التي تتجاوز مبلغاً معيناً. سيناقش منسق المريض لدينا الخيارات أثناء استشارتك." }
+      },
+      {
+        "id": "faq-009",
+        "cat": "emergency",
+        "q": { "en": "What should I do if I have a dental emergency?", "ar": "ماذا أفعل في حالة طوارئ الأسنان؟" },
+        "a": { "en": "Call our emergency line immediately. We reserve same-day appointment slots for dental emergencies including severe toothache, broken teeth, and lost crowns.", "ar": "اتصل بخط الطوارئ لدينا فوراً. نحتفظ بمواعيد في نفس اليوم لحالات طوارئ الأسنان بما فيها آلام الأسنان الشديدة والأسنان المكسورة والتيجان المفقودة." }
+      },
+      {
+        "id": "faq-010",
+        "cat": "emergency",
+        "q": { "en": "I knocked out a tooth — what do I do?", "ar": "لقد سقط سني — ماذا أفعل؟" },
+        "a": { "en": "Pick up the tooth by the crown (not the root). If clean, try to reinsert it in the socket. If not, keep it in milk or saliva. Call us immediately — replantation succeeds best within 30 minutes.", "ar": "التقط السن من التاج (وليس الجذر). إن كان نظيفاً، حاول إعادته إلى المقبس. إن لم يكن كذلك، ضعه في الحليب أو اللعاب. اتصل بنا فوراً — إعادة الزرع تنجح بشكل أفضل في غضون ٣٠ دقيقة." }
+      },
+      {
+        "id": "faq-011",
+        "cat": "children",
+        "q": { "en": "When should my child have their first dental visit?", "ar": "متى يجب أن تكون أول زيارة لطبيب الأسنان لطفلي؟" },
+        "a": { "en": "We recommend the first visit when the first tooth appears or by your child's first birthday — whichever comes first. Early visits help children feel comfortable and establish good habits.", "ar": "نوصي بأول زيارة عند ظهور أول سن أو بعيد ميلاد طفلك الأول — أيهما يأتي أولاً. تساعد الزيارات المبكرة الأطفال على الشعور بالراحة وتأسيس عادات جيدة." }
+      },
+      {
+        "id": "faq-012",
+        "cat": "children",
+        "q": { "en": "Are X-rays safe for children?", "ar": "هل الأشعة السينية آمنة للأطفال؟" },
+        "a": { "en": "Yes. We use digital X-rays which emit up to 80% less radiation than traditional X-rays. We only take X-rays when clinically necessary and always use protective lead aprons.", "ar": "نعم. نستخدم الأشعة الرقمية التي تبعث ما يصل إلى ٨٠٪ أقل من الأشعة التقليدية. نأخذ الأشعة فقط عند الضرورة السريرية ونستخدم دائماً مريلات الرصاص الواقية." }
+      }
+    ]
+  },
+  "contact": {
+    "address": { "en": "123 Health Street, Medical District, Riyadh 12345", "ar": "١٢٣ شارع الصحة، الحي الطبي، الرياض ١٢٣٤٥" },
+    "phone": { "en": "+966 50 000 0000", "ar": "٠٠٩٦٦٥٠٠٠٠٠٠٠٠" },
+    "email": { "en": "hello@clinicdemo.com", "ar": "hello@clinicdemo.com" },
+    "hours": { "en": "Saturday – Thursday: 9:00 AM – 9:00 PM", "ar": "السبت – الخميس: ٩:٠٠ ص – ٩:٠٠ م" }
+  }
+}

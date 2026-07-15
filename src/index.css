@@ -1,0 +1,120 @@
+@import "tailwindcss";
+
+:root {
+  --forest: #1A3C2E;
+  --forest-mid: #2D5C45;
+  --forest-light: #3D7A5C;
+  --gold: #C9973A;
+  --gold-light: #E2B865;
+  --ivory: #F8F4EE;
+  --mint: #EEF5F1;
+  --ivory-dark: #EDE8DF;
+  --text: #0F1E18;
+  --muted: #6B8077;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--ivory);
+  color: var(--text);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+[dir="rtl"] body,
+[dir="rtl"] {
+  font-family: 'Noto Naskh Arabic', 'Plus Jakarta Sans', sans-serif;
+}
+
+.font-display {
+  font-family: 'Cormorant Garamond', serif;
+}
+
+.font-arabic {
+  font-family: 'Noto Naskh Arabic', serif;
+}
+
+/* Scroll reveal animation */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--ivory-dark); }
+::-webkit-scrollbar-thumb { background: var(--forest-light); border-radius: 3px; }
+
+/* Before/After slider */
+.ba-slider {
+  position: relative;
+  overflow: hidden;
+  cursor: col-resize;
+  user-select: none;
+  border-radius: 16px;
+}
+
+.ba-handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: white;
+  cursor: col-resize;
+  z-index: 10;
+}
+
+.ba-handle::before, .ba-handle::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 40px;
+  background: white;
+  border-radius: 50%;
+  top: 50%;
+  margin-top: -20px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+.ba-handle::after {
+  background: var(--forest);
+  width: 36px;
+  height: 36px;
+  margin-top: -18px;
+}
+
+/* Accordion animation */
+.accordion-content {
+  overflow: hidden;
+  transition: max-height 0.35s ease, opacity 0.35s ease;
+  opacity: 0;
+  max-height: 0;
+}
+
+.accordion-content.open {
+  opacity: 1;
+}
+
+/* Step indicator */
+.step-connector {
+  flex: 1;
+  height: 2px;
+  background: var(--ivory-dark);
+  transition: background 0.3s;
+}
+
+.step-connector.active {
+  background: var(--gold);
+}
