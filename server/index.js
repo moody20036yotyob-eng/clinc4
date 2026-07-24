@@ -1,6 +1,11 @@
 import express from 'express'
 import cors from 'cors'
 import helmet from 'helmet'
+import { fileURLToPath } from 'url'
+import { dirname, join } from 'path'
+import { existsSync } from 'fs'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
 import rateLimit from 'express-rate-limit'
 import { body, param, validationResult } from 'express-validator'
 import xss from 'xss'
@@ -210,6 +215,15 @@ app.put('/api/content/:section',
     res.json(updated)
   }
 )
+
+// ── Serve React frontend in production ───────────────────────────────────────
+const distPath = join(__dirname, '../dist')
+if (existsSync(distPath)) {
+  app.use(express.static(distPath))
+  app.get('*', (req, res) => {
+    res.sendFile(join(distPath, 'index.html'))
+  })
+}
 
 // ── Global error handler ──────────────────────────────────────────────────────
 app.use((err, req, res, next) => {
