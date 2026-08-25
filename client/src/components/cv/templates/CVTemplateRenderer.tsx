@@ -41,6 +41,26 @@ import { CVProductManager } from './CVProductManager';
 import { CVDataScientist } from './CVDataScientist';
 import { CVCreativeBold } from './CVCreativeBold';
 import { CVElegantMinimal } from './CVElegantMinimal';
+import { CVModernPhotoHeader } from './CVModernPhotoHeader';
+import { CVDiagonalSplit } from './CVDiagonalSplit';
+import { CVCircularSkills } from './CVCircularSkills';
+import { CVMonogramInitials } from './CVMonogramInitials';
+import { CVNewspaper } from './CVNewspaper';
+import { CVRibbonAccent } from './CVRibbonAccent';
+import { CVTwoTone } from './CVTwoTone';
+import { CVPassportStyle } from './CVPassportStyle';
+import { CVIconSidebar } from './CVIconSidebar';
+import { CVGradientHeader } from './CVGradientHeader';
+import { CVNonprofit } from './CVNonprofit';
+import { CVHospitality } from './CVHospitality';
+import { CVSalesPro } from './CVSalesPro';
+import { CVHRProfessional } from './CVHRProfessional';
+import { CVJournalist } from './CVJournalist';
+import { CVConsulting } from './CVConsulting';
+import { CVResearcher } from './CVResearcher';
+import { CVITInfrastructure } from './CVITInfrastructure';
+import { CVSocialMedia } from './CVSocialMedia';
+import { CVBusinessAnalyst } from './CVBusinessAnalyst';
 
 interface Props {
   data: CVData;
@@ -90,6 +110,26 @@ const TEMPLATE_MAP: Record<string, React.ComponentType<{ data: CVData }>> = {
   'data-scientist': CVDataScientist,
   'creative-bold': CVCreativeBold,
   'elegant-minimal': CVElegantMinimal,
+  'modern-photo-header': CVModernPhotoHeader,
+  'diagonal-split': CVDiagonalSplit,
+  'circular-skills': CVCircularSkills,
+  'monogram': CVMonogramInitials,
+  'newspaper': CVNewspaper,
+  'ribbon-accent': CVRibbonAccent,
+  'two-tone': CVTwoTone,
+  'passport-style': CVPassportStyle,
+  'icon-sidebar': CVIconSidebar,
+  'gradient-header': CVGradientHeader,
+  'nonprofit': CVNonprofit,
+  'hospitality': CVHospitality,
+  'sales-pro': CVSalesPro,
+  'hr-professional': CVHRProfessional,
+  'journalist': CVJournalist,
+  'consulting': CVConsulting,
+  'researcher': CVResearcher,
+  'it-infrastructure': CVITInfrastructure,
+  'social-media': CVSocialMedia,
+  'business-analyst': CVBusinessAnalyst,
 };
 
 export function CVTemplateRenderer({ data, templateSlug }: Props) {
