@@ -21,6 +21,26 @@ import { CVMarketingBold } from './CVMarketingBold';
 import { CVTimeline } from './CVTimeline';
 import { CVCompactATS } from './CVCompactATS';
 import { CVDesignerPortfolio } from './CVDesignerPortfolio';
+import { CVSplitColor } from './CVSplitColor';
+import { CVEditorial } from './CVEditorial';
+import { CVGeometric } from './CVGeometric';
+import { CVCorporateBlue } from './CVCorporateBlue';
+import { CVPhotoRight } from './CVPhotoRight';
+import { CVSwissClean } from './CVSwissClean';
+import { CVCreativeAgencyStyle } from './CVCreativeAgencyStyle';
+import { CVCardBased } from './CVCardBased';
+import { CVHeroName } from './CVHeroName';
+import { CVPhotoCircleLeft } from './CVPhotoCircleLeft';
+import { CVArabicModern } from './CVArabicModern';
+import { CVHealthcare } from './CVHealthcare';
+import { CVLegalPro } from './CVLegalPro';
+import { CVTeacherEdu } from './CVTeacherEdu';
+import { CVFreelancer } from './CVFreelancer';
+import { CVSeniorExec } from './CVSeniorExec';
+import { CVProductManager } from './CVProductManager';
+import { CVDataScientist } from './CVDataScientist';
+import { CVCreativeBold } from './CVCreativeBold';
+import { CVElegantMinimal } from './CVElegantMinimal';
 
 interface Props {
   data: CVData;
@@ -50,6 +70,26 @@ const TEMPLATE_MAP: Record<string, React.ComponentType<{ data: CVData }>> = {
   'timeline-style': CVTimeline,
   'compact-ats': CVCompactATS,
   'designer-portfolio': CVDesignerPortfolio,
+  'split-color': CVSplitColor,
+  'editorial': CVEditorial,
+  'geometric': CVGeometric,
+  'corporate-blue': CVCorporateBlue,
+  'photo-right': CVPhotoRight,
+  'swiss-clean': CVSwissClean,
+  'agency-style': CVCreativeAgencyStyle,
+  'card-based': CVCardBased,
+  'hero-name': CVHeroName,
+  'photo-circle-left': CVPhotoCircleLeft,
+  'arabic-modern': CVArabicModern,
+  'healthcare': CVHealthcare,
+  'legal-pro': CVLegalPro,
+  'teacher-edu': CVTeacherEdu,
+  'freelancer': CVFreelancer,
+  'senior-exec': CVSeniorExec,
+  'product-manager': CVProductManager,
+  'data-scientist': CVDataScientist,
+  'creative-bold': CVCreativeBold,
+  'elegant-minimal': CVElegantMinimal,
 };
 
 export function CVTemplateRenderer({ data, templateSlug }: Props) {
