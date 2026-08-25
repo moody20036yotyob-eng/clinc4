@@ -61,6 +61,26 @@ import { CVResearcher } from './CVResearcher';
 import { CVITInfrastructure } from './CVITInfrastructure';
 import { CVSocialMedia } from './CVSocialMedia';
 import { CVBusinessAnalyst } from './CVBusinessAnalyst';
+import { CVBoldColorBlocks } from './CVBoldColorBlocks';
+import { CVWatermarkName } from './CVWatermarkName';
+import { CVMagazineCover } from './CVMagazineCover';
+import { CVTriangleCorner } from './CVTriangleCorner';
+import { CVBorderFrame } from './CVBorderFrame';
+import { CVColorBandStack } from './CVColorBandStack';
+import { CVTabDividers } from './CVTabDividers';
+import { CVIconRich } from './CVIconRich';
+import { CVMinimalCards } from './CVMinimalCards';
+import { CVDotAccents } from './CVDotAccents';
+import { CVArchitectDesign } from './CVArchitectDesign';
+import { CVGameDeveloper } from './CVGameDeveloper';
+import { CVCivilEngineer } from './CVCivilEngineer';
+import { CVAccountant } from './CVAccountant';
+import { CVVideoProducer } from './CVVideoProducer';
+import { CVUXResearcher } from './CVUXResearcher';
+import { CVExecutiveBrief } from './CVExecutiveBrief';
+import { CVMultilingual } from './CVMultilingual';
+import { CVNightMode } from './CVNightMode';
+import { CVCleanSplit } from './CVCleanSplit';
 
 interface Props {
   data: CVData;
@@ -130,6 +150,26 @@ const TEMPLATE_MAP: Record<string, React.ComponentType<{ data: CVData }>> = {
   'it-infrastructure': CVITInfrastructure,
   'social-media': CVSocialMedia,
   'business-analyst': CVBusinessAnalyst,
+  'bold-color-blocks': CVBoldColorBlocks,
+  'watermark-name': CVWatermarkName,
+  'magazine-cover': CVMagazineCover,
+  'triangle-corner': CVTriangleCorner,
+  'border-frame': CVBorderFrame,
+  'color-band-stack': CVColorBandStack,
+  'tab-dividers': CVTabDividers,
+  'icon-rich': CVIconRich,
+  'minimal-cards': CVMinimalCards,
+  'dot-accents': CVDotAccents,
+  'architect-design': CVArchitectDesign,
+  'game-developer': CVGameDeveloper,
+  'civil-engineer': CVCivilEngineer,
+  'accountant': CVAccountant,
+  'video-producer': CVVideoProducer,
+  'ux-researcher': CVUXResearcher,
+  'executive-brief': CVExecutiveBrief,
+  'multilingual': CVMultilingual,
+  'night-mode': CVNightMode,
+  'clean-split': CVCleanSplit,
 };
 
 export function CVTemplateRenderer({ data, templateSlug }: Props) {
