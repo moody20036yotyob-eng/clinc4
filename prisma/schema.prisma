@@ -1,0 +1,357 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Users ──────────────────────────────────────────────────────────────────
+
+model User {
+  id              String    @id @default(cuid())
+  email           String    @unique
+  passwordHash    String
+  name            String
+  nameAr          String?
+  role            UserRole  @default(USER)
+  emailVerified   Boolean   @default(false)
+  emailVerifyToken String?
+  resetToken      String?
+  resetTokenExpiry DateTime?
+  isActive        Boolean   @default(true)
+  avatar          String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  cvs               CV[]
+  portfolios        Portfolio[]
+  orders            Order[]
+  sessions          UserSession[]
+  analyticsEvents   AnalyticsEvent[]
+
+  @@index([email])
+}
+
+model UserSession {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([token])
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+// ─── CV Templates ────────────────────────────────────────────────────────────
+
+model CVTemplate {
+  id                 String   @id @default(cuid())
+  slug               String   @unique
+  name               String
+  nameAr             String?
+  description        String?
+  descriptionAr      String?
+  category           String
+  previewImage       String?
+  componentName      String
+  isATS              Boolean  @default(false)
+  supportedLanguages String[] @default(["en", "ar"])
+  isPremium          Boolean  @default(false)
+  isFeatured         Boolean  @default(false)
+  isActive           Boolean  @default(true)
+  tags               String[] @default([])
+  order              Int      @default(0)
+  viewCount          Int      @default(0)
+  useCount           Int      @default(0)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  cvs CV[]
+
+  @@index([category])
+  @@index([isActive])
+  @@index([isFeatured])
+}
+
+// ─── CVs ─────────────────────────────────────────────────────────────────────
+
+model CV {
+  id          String   @id @default(cuid())
+  userId      String
+  templateId  String
+  title       String   @default("My CV")
+  data        Json
+  isActive    Boolean  @default(true)
+  lastSavedAt DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user     User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  template CVTemplate @relation(fields: [templateId], references: [id])
+  versions CVVersion[]
+  orders   Order[]
+
+  @@index([userId])
+  @@index([templateId])
+}
+
+model CVVersion {
+  id        String   @id @default(cuid())
+  cvId      String
+  data      Json
+  version   Int
+  label     String?
+  createdAt DateTime @default(now())
+
+  cv CV @relation(fields: [cvId], references: [id], onDelete: Cascade)
+
+  @@index([cvId])
+}
+
+// ─── Portfolio Templates ─────────────────────────────────────────────────────
+
+model PortfolioTemplate {
+  id            String   @id @default(cuid())
+  slug          String   @unique
+  name          String
+  nameAr        String?
+  description   String?
+  descriptionAr String?
+  category      String
+  previewImage  String?
+  componentName String
+  isPremium     Boolean  @default(false)
+  isFeatured    Boolean  @default(false)
+  isActive      Boolean  @default(true)
+  tags          String[] @default([])
+  order         Int      @default(0)
+  viewCount     Int      @default(0)
+  useCount      Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  portfolios Portfolio[]
+
+  @@index([category])
+  @@index([isActive])
+}
+
+// ─── Portfolios ───────────────────────────────────────────────────────────────
+
+model Portfolio {
+  id           String          @id @default(cuid())
+  userId       String
+  templateId   String
+  title        String          @default("My Portfolio")
+  slug         String          @unique
+  data         Json
+  isPublished  Boolean         @default(false)
+  publishedAt  DateTime?
+  customDomain String?
+  isActive     Boolean         @default(true)
+  viewCount    Int             @default(0)
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+
+  user              User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  template          PortfolioTemplate    @relation(fields: [templateId], references: [id])
+  versions          PortfolioVersion[]
+  orders            Order[]
+  hostingSubscription HostingSubscription?
+
+  @@index([userId])
+  @@index([slug])
+  @@index([isPublished])
+}
+
+model PortfolioVersion {
+  id          String   @id @default(cuid())
+  portfolioId String
+  data        Json
+  version     Int
+  label       String?
+  createdAt   DateTime @default(now())
+
+  portfolio Portfolio @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
+
+  @@index([portfolioId])
+}
+
+// ─── Hosting ─────────────────────────────────────────────────────────────────
+
+model HostingSubscription {
+  id          String          @id @default(cuid())
+  portfolioId String          @unique
+  startDate   DateTime
+  expiryDate  DateTime
+  status      HostingStatus   @default(ACTIVE)
+  renewalPrice Decimal?
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  portfolio Portfolio @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
+
+  @@index([expiryDate])
+  @@index([status])
+}
+
+enum HostingStatus {
+  ACTIVE
+  EXPIRED
+  SUSPENDED
+}
+
+// ─── Orders ───────────────────────────────────────────────────────────────────
+
+model Order {
+  id            String        @id @default(cuid())
+  orderNumber   String        @unique
+  userId        String
+  productType   ProductType
+  amount        Decimal
+  currency      String        @default("SAR")
+  status        OrderStatus   @default(PENDING)
+  paymentStatus PaymentStatus @default(PENDING)
+  couponId      String?
+  discountAmount Decimal?
+  cvId          String?
+  portfolioId   String?
+  metadata      Json?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  user     User     @relation(fields: [userId], references: [id])
+  coupon   Coupon?  @relation(fields: [couponId], references: [id])
+  cv       CV?      @relation(fields: [cvId], references: [id])
+  portfolio Portfolio? @relation(fields: [portfolioId], references: [id])
+  payments Payment[]
+
+  @@index([userId])
+  @@index([orderNumber])
+  @@index([status])
+}
+
+model Payment {
+  id              String        @id @default(cuid())
+  orderId         String
+  provider        String
+  providerTxId    String?
+  amount          Decimal
+  currency        String        @default("SAR")
+  status          PaymentStatus @default(PENDING)
+  providerResponse Json?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  order Order @relation(fields: [orderId], references: [id])
+
+  @@index([orderId])
+  @@index([providerTxId])
+}
+
+enum ProductType {
+  CV
+  PORTFOLIO
+  BUNDLE
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+// ─── Coupons ─────────────────────────────────────────────────────────────────
+
+model Coupon {
+  id             String       @id @default(cuid())
+  code           String       @unique
+  type           CouponType
+  value          Decimal
+  minOrderAmount Decimal?
+  maxUses        Int?
+  usedCount      Int          @default(0)
+  expiresAt      DateTime?
+  isActive       Boolean      @default(true)
+  applicableTo   ProductType?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  orders Order[]
+
+  @@index([code])
+  @@index([isActive])
+}
+
+enum CouponType {
+  PERCENTAGE
+  FIXED
+}
+
+// ─── Settings ────────────────────────────────────────────────────────────────
+
+model Setting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String
+  type      String   @default("string")
+  label     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ─── File Uploads ─────────────────────────────────────────────────────────────
+
+model File {
+  id           String   @id @default(cuid())
+  userId       String?
+  filename     String
+  originalName String
+  mimeType     String
+  size         Int
+  url          String
+  storageType  String   @default("local")
+  storageKey   String
+  createdAt    DateTime @default(now())
+
+  @@index([userId])
+}
+
+// ─── Analytics ───────────────────────────────────────────────────────────────
+
+model AnalyticsEvent {
+  id         String   @id @default(cuid())
+  userId     String?
+  type       String
+  entityId   String?
+  entityType String?
+  metadata   Json?
+  ip         String?
+  userAgent  String?
+  createdAt  DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id])
+
+  @@index([type])
+  @@index([entityId])
+  @@index([createdAt])
+}

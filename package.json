@@ -1,37 +1,23 @@
 {
-  "name": "clinc4",
+  "name": "ecotrove",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "private": true,
+  "workspaces": ["client", "server", "shared"],
   "scripts": {
-    "dev": "vite",
-    "server": "node server/index.js",
-    "build": "vite build",
-    "preview": "vite preview",
-    "start": "node server/index.js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "module",
-  "dependencies": {
-    "bcryptjs": "^3.0.3",
-    "cors": "^2.8.6",
-    "express": "^5.2.1",
-    "express-rate-limit": "^8.5.2",
-    "express-validator": "^7.3.2",
-    "helmet": "^8.3.0",
-    "jsonwebtoken": "^9.0.3",
-    "react": "^19.2.7",
-    "react-dom": "^19.2.7",
-    "react-router-dom": "^7.18.1",
-    "xss": "^1.0.15"
+    "dev": "concurrently \"npm run dev:client\" \"npm run dev:server\"",
+    "dev:client": "npm run dev --workspace=client",
+    "dev:server": "npm run dev --workspace=server",
+    "build": "npm run build:shared && npm run build:client && npm run build:server",
+    "build:client": "npm run build --workspace=client",
+    "build:server": "npm run build --workspace=server",
+    "build:shared": "npm run build --workspace=shared",
+    "start": "npm run start --workspace=server",
+    "db:migrate": "npm run db:migrate --workspace=server",
+    "db:seed": "npm run db:seed --workspace=server",
+    "lint": "concurrently \"npm run lint --workspace=client\" \"npm run lint --workspace=server\"",
+    "type-check": "concurrently \"npm run type-check --workspace=client\" \"npm run type-check --workspace=server\""
   },
   "devDependencies": {
-    "@tailwindcss/vite": "^4.3.2",
-    "@vitejs/plugin-react": "^6.0.3",
-    "nodemon": "^3.1.14",
-    "tailwindcss": "^4.3.2",
-    "vite": "^8.1.4"
+    "concurrently": "^8.2.2"
   }
 }
