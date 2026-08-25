@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { PortfolioData, DEFAULT_PORTFOLIO_DATA } from '@ecotrove/shared';
+import { PortfolioData, DEFAULT_PORTFOLIO_DATA } from '@shared/types/portfolio';
 import { api } from '@/lib/api';
 import { debounce } from '@/lib/utils';
 
@@ -18,8 +18,8 @@ interface PortfolioStore {
   setTemplate: (id: string, slug: string) => void;
   setData: (data: PortfolioData) => void;
   setPortfolioData: (data: PortfolioData, id: string, templateSlug: string) => void;
-  updatePersonal: (personal: Partial<PortfolioData['personalInfo']>) => void;
-  updatePersonalInfo: (personal: Partial<PortfolioData['personalInfo']>) => void;
+  updatePersonal: (personal: Partial<PortfolioData['personal']>) => void;
+  updatePersonalInfo: (personal: Partial<PortfolioData['personal']>) => void;
   updateSection: (sectionId: string, patch: Partial<PortfolioData['sections'][number]>) => void;
   updateSettings: (settings: Partial<PortfolioData['settings']>) => void;
   setPublished: (published: boolean, slug?: string) => void;

@@ -1,12 +1,10 @@
 import { useTranslation } from 'react-i18next';
 import { useCVStore } from '@/store/cvStore';
-import type { CVSection } from '@shared/types/cv';
 
-export function SummaryPanel({ section }: { section?: CVSection }) {
+export function SummaryPanel() {
   const { t } = useTranslation();
-  const { updateSection } = useCVStore();
-
-  const value = (section?.content as string | undefined) || '';
+  const { data, updatePersonalInfo } = useCVStore();
+  const value = data?.personalInfo?.summary || '';
 
   return (
     <div className="space-y-4">
@@ -16,7 +14,7 @@ export function SummaryPanel({ section }: { section?: CVSection }) {
         <textarea
           className="input min-h-[160px] resize-y"
           value={value}
-          onChange={(e) => section && updateSection(section.id, { content: e.target.value })}
+          onChange={(e) => updatePersonalInfo({ summary: e.target.value })}
           placeholder={t('cvEditor.placeholders.summary')}
         />
         <p className="text-xs text-surface-400 mt-1">{t('cvEditor.summaryHint')}</p>

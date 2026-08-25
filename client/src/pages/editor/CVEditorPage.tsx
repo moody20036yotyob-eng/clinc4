@@ -33,7 +33,7 @@ const SECTION_ICONS: Record<string, React.ElementType> = {
   references: Users,
 };
 
-const PANEL_MAP: Record<string, React.ComponentType<{ section?: CVSection }>> = {
+const PANEL_MAP: Record<string, React.ComponentType> = {
   personal: PersonalInfoPanel,
   summary: SummaryPanel,
   experience: ExperiencePanel,
@@ -83,7 +83,6 @@ export default function CVEditorPage() {
   };
 
   const ActivePanel = PANEL_MAP[activeSection];
-  const activeSecData = cvData?.sections?.find((s) => s.type === activeSection);
 
   if (isLoading) {
     return (
@@ -191,7 +190,7 @@ export default function CVEditorPage() {
           {/* Edit panels */}
           <div className="w-80 shrink-0 overflow-y-auto bg-white border-e border-surface-100 p-4">
             {ActivePanel ? (
-              <ActivePanel section={activeSecData} />
+              <ActivePanel />
             ) : (
               <div className="text-center py-10 text-surface-400 text-sm">
                 {t('editor.selectSection')}

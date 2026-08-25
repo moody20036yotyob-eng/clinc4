@@ -71,9 +71,9 @@ export function PortfolioMinimal({ data }: Props) {
                   <div className="p-5">
                     <h3 className="font-bold text-surface-900 mb-1">{proj.title}</h3>
                     <p className="text-surface-500 text-sm mb-3">{proj.description}</p>
-                    {proj.technologies?.length > 0 && (
+                    {(proj.technologies?.length ?? 0) > 0 && (
                       <div className="flex flex-wrap gap-1.5 mb-3">
-                        {proj.technologies.map((tag) => (
+                        {(proj.technologies ?? []).map((tag) => (
                           <span key={tag} className="px-2 py-0.5 text-xs rounded-full bg-surface-100 text-surface-600">{tag}</span>
                         ))}
                       </div>

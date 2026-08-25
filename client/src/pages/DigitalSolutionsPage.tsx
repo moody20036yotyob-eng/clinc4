@@ -29,7 +29,7 @@ export default function DigitalSolutionsPage() {
       {/* Hero */}
       <section className="bg-gradient-to-br from-surface-900 via-surface-800 to-surface-900 text-white section-padding">
         <div className="container-tight text-center">
-          <Badge variant="default" className="mb-6 bg-white/10 text-white border-white/20">
+          <Badge variant="surface" className="mb-6 bg-white/10 text-white border-white/20">
             {t('digitalSolutions.badge')}
           </Badge>
           <h1 className="text-4xl sm:text-5xl font-bold mb-4 leading-tight">
@@ -117,7 +117,7 @@ export default function DigitalSolutionsPage() {
             <h2 className="text-3xl font-bold mb-3">{t('digitalSolutions.ctaTitle')}</h2>
             <p className="text-brand-100 mb-8 max-w-xl mx-auto">{t('digitalSolutions.ctaSubtitle')}</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <WhatsAppButton size="lg" variant="white" />
+              <WhatsAppButton size="lg" variant="outline" />
               <Button variant="outline" size="lg" className="border-white text-white hover:bg-white/10" asChild>
                 <a href="mailto:hello@ecotrove.sa">
                   {t('digitalSolutions.emailUs')}

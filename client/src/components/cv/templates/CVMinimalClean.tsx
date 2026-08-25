@@ -21,11 +21,11 @@ function getSection(data: CVData, type: string) {
 
 export function CVMinimalClean({ data }: Props) {
   const { personalInfo } = data;
-  const experience = (getSection(data, 'experience')?.items ?? []) as ExperienceItem[];
-  const education = (getSection(data, 'education')?.items ?? []) as EducationItem[];
-  const skills = (getSection(data, 'skills')?.items ?? []) as SkillItem[];
-  const languages = (getSection(data, 'languages')?.items ?? []) as LanguageItem[];
-  const summary = getSection(data, 'summary')?.content as string | undefined;
+  const experience = data.experience as ExperienceItem[];
+  const education = data.education as EducationItem[];
+  const skills = data.skills as SkillItem[];
+  const languages = data.languages as LanguageItem[];
+  const summary = personalInfo.summary;
 
   return (
     <div className="bg-white font-sans text-surface-900" style={{ minHeight: '297mm', padding: '16mm 18mm' }}>
@@ -38,8 +38,8 @@ export function CVMinimalClean({ data }: Props) {
               <p className="text-brand-600 font-medium mt-1">{personalInfo.jobTitle}</p>
             )}
           </div>
-          {personalInfo.photoUrl && (
-            <img src={personalInfo.photoUrl} alt="Photo" className="h-20 w-20 rounded-full object-cover border-2 border-surface-200 shrink-0" />
+          {personalInfo.photo && (
+            <img src={personalInfo.photo} alt="Photo" className="h-20 w-20 rounded-full object-cover border-2 border-surface-200 shrink-0" />
           )}
         </div>
         <div className="flex flex-wrap gap-x-5 gap-y-1.5 mt-4 text-sm text-surface-500">

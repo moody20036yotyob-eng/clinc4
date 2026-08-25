@@ -116,7 +116,7 @@ export default function PricingPage() {
                     </li>
                   ))}
                 </ul>
-                <Button asChild className="w-full" variant={plan.badge ? 'default' : 'outline'}>
+                <Button asChild className="w-full" variant={plan.badge ? 'primary' : 'outline'}>
                   <Link to={plan.href}>{plan.cta}</Link>
                 </Button>
               </div>

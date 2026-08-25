@@ -4,8 +4,8 @@ import { useCVStore } from '@/store/cvStore';
 
 export function PersonalInfoPanel() {
   const { t } = useTranslation();
-  const { cvData, updatePersonalInfo } = useCVStore();
-  const info = cvData?.personalInfo;
+  const { data, updatePersonalInfo } = useCVStore();
+  const info = data?.personalInfo;
 
   if (!info) return null;
 
@@ -40,12 +40,12 @@ export function PersonalInfoPanel() {
             const file = e.target.files?.[0];
             if (!file) return;
             const reader = new FileReader();
-            reader.onload = (ev) => updatePersonalInfo({ photoUrl: ev.target?.result as string });
+            reader.onload = (ev) => updatePersonalInfo({ photo: ev.target?.result as string });
             reader.readAsDataURL(file);
           }}
         />
-        {info.photoUrl && (
-          <img src={info.photoUrl} alt="Photo" className="h-16 w-16 rounded-full object-cover mt-2 border-2 border-surface-200" />
+        {info.photo && (
+          <img src={info.photo} alt="Photo" className="h-16 w-16 rounded-full object-cover mt-2 border-2 border-surface-200" />
         )}
       </div>
     </div>

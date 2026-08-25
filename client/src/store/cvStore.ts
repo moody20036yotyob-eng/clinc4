@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { CVData, DEFAULT_CV_DATA } from '@ecotrove/shared';
+import { CVData, DEFAULT_CV_DATA, ExperienceItem, EducationItem, SkillItem, LanguageItem } from '@shared/types/cv';
 import { api } from '@/lib/api';
 import { debounce } from '@/lib/utils';
 
@@ -19,6 +19,10 @@ interface CVStore {
   setCVData: (data: CVData, id: string, templateSlug: string) => void;
   updatePersonalInfo: (info: Partial<CVData['personalInfo']>) => void;
   updateSection: (sectionId: string, patch: Partial<CVData['sections'][number]>) => void;
+  updateExperience: (items: ExperienceItem[]) => void;
+  updateEducation: (items: EducationItem[]) => void;
+  updateSkills: (items: SkillItem[]) => void;
+  updateLanguages: (items: LanguageItem[]) => void;
   updateSettings: (settings: Partial<CVData['settings']>) => void;
   save: (id?: string) => Promise<void>;
   debouncedSave: () => void;
@@ -76,6 +80,11 @@ export const useCVStore = create<CVStore>((set, get) => {
       }));
       saveFn?.();
     },
+
+    updateExperience: (items) => { set((s) => ({ data: { ...s.data, experience: items } })); saveFn?.(); },
+    updateEducation: (items) => { set((s) => ({ data: { ...s.data, education: items } })); saveFn?.(); },
+    updateSkills: (items) => { set((s) => ({ data: { ...s.data, skills: items } })); saveFn?.(); },
+    updateLanguages: (items) => { set((s) => ({ data: { ...s.data, languages: items } })); saveFn?.(); },
 
     updateSettings: (settings) => {
       set((state) => ({

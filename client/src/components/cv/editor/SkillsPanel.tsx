@@ -4,19 +4,15 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { useCVStore } from '@/store/cvStore';
-import type { CVSection, SkillItem } from '@shared/types/cv';
+import type { SkillItem } from '@shared/types/cv';
 
-export function SkillsPanel({ section }: { section?: CVSection }) {
+export function SkillsPanel() {
   const { t } = useTranslation();
-  const { updateSection } = useCVStore();
+  const { data, updateSkills } = useCVStore();
   const [newSkill, setNewSkill] = useState('');
   const [newCategory, setNewCategory] = useState('');
 
-  const items: SkillItem[] = (section?.items as SkillItem[]) || [];
-
-  const update = (newItems: SkillItem[]) => {
-    if (section) updateSection(section.id, { items: newItems });
-  };
+  const items: SkillItem[] = data?.skills || [];
 
   const addSkill = () => {
     if (!newSkill.trim()) return;
@@ -26,13 +22,13 @@ export function SkillsPanel({ section }: { section?: CVSection }) {
       level: 'intermediate',
       category: newCategory.trim() || undefined,
     };
-    update([...items, item]);
+    updateSkills([...items, item]);
     setNewSkill('');
   };
 
-  const removeSkill = (id: string) => update(items.filter((s) => s.id !== id));
+  const removeSkill = (id: string) => updateSkills(items.filter((s) => s.id !== id));
   const updateLevel = (id: string, level: SkillItem['level']) =>
-    update(items.map((s) => s.id === id ? { ...s, level } : s));
+    updateSkills(items.map((s) => s.id === id ? { ...s, level } : s));
 
   const categories = [...new Set(items.map((s) => s.category || 'General'))];
 

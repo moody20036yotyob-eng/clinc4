@@ -4,19 +4,14 @@ import { Plus, Trash2, ChevronDown, ChevronUp } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { useCVStore } from '@/store/cvStore';
-import type { CVSection, ExperienceItem } from '@shared/types/cv';
-import { cn } from '@/lib/utils';
+import type { ExperienceItem } from '@shared/types/cv';
 
-export function ExperiencePanel({ section }: { section?: CVSection }) {
+export function ExperiencePanel() {
   const { t } = useTranslation();
-  const { updateSection } = useCVStore();
+  const { data, updateExperience } = useCVStore();
   const [openIdx, setOpenIdx] = useState<number | null>(0);
 
-  const items: ExperienceItem[] = (section?.items as ExperienceItem[]) || [];
-
-  const update = (newItems: ExperienceItem[]) => {
-    if (section) updateSection(section.id, { items: newItems });
-  };
+  const items: ExperienceItem[] = data?.experience || [];
 
   const addItem = () => {
     const newItem: ExperienceItem = {
@@ -28,19 +23,18 @@ export function ExperiencePanel({ section }: { section?: CVSection }) {
       endDate: '',
       current: false,
       description: '',
-      bullets: [],
     };
-    update([...items, newItem]);
+    updateExperience([...items, newItem]);
     setOpenIdx(items.length);
   };
 
   const removeItem = (idx: number) => {
-    update(items.filter((_, i) => i !== idx));
+    updateExperience(items.filter((_, i) => i !== idx));
     setOpenIdx(null);
   };
 
   const updateItem = (idx: number, patch: Partial<ExperienceItem>) => {
-    update(items.map((item, i) => i === idx ? { ...item, ...patch } : item));
+    updateExperience(items.map((item, i) => i === idx ? { ...item, ...patch } : item));
   };
 
   return (

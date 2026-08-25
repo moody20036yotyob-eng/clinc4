@@ -22,8 +22,8 @@ function TemplateCard({ template, onSelect }: { template: PortfolioTemplateInfo;
   return (
     <div className="group rounded-2xl border border-surface-200 bg-white overflow-hidden hover:border-brand-300 hover:shadow-card transition-all duration-200">
       <div className="aspect-video bg-gradient-to-br from-surface-50 to-surface-100 relative overflow-hidden">
-        {template.previewImageUrl ? (
-          <img src={template.previewImageUrl} alt={template.name} className="w-full h-full object-cover" />
+        {template.previewImage ? (
+          <img src={template.previewImage} alt={template.name} className="w-full h-full object-cover" />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center">
             <LayoutTemplate className="h-12 w-12 text-surface-300" />

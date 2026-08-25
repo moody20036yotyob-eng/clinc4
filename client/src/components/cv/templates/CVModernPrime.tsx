@@ -13,19 +13,19 @@ const LEVEL_WIDTH: Record<string, string> = {
 
 export function CVModernPrime({ data }: Props) {
   const { personalInfo } = data;
-  const experience = (getSection(data, 'experience')?.items ?? []) as ExperienceItem[];
-  const education = (getSection(data, 'education')?.items ?? []) as EducationItem[];
-  const skills = (getSection(data, 'skills')?.items ?? []) as SkillItem[];
-  const languages = (getSection(data, 'languages')?.items ?? []) as LanguageItem[];
-  const summary = getSection(data, 'summary')?.content as string | undefined;
+  const experience = data.experience as ExperienceItem[];
+  const education = data.education as EducationItem[];
+  const skills = data.skills as SkillItem[];
+  const languages = data.languages as LanguageItem[];
+  const summary = personalInfo.summary;
 
   return (
     <div className="bg-white font-sans flex" style={{ minHeight: '297mm' }}>
       {/* Sidebar */}
       <div className="w-64 bg-surface-900 text-white p-8 flex-shrink-0">
-        {personalInfo.photoUrl && (
+        {personalInfo.photo && (
           <div className="flex justify-center mb-6">
-            <img src={personalInfo.photoUrl} alt="Photo" className="h-24 w-24 rounded-full object-cover border-4 border-white/20" />
+            <img src={personalInfo.photo} alt="Photo" className="h-24 w-24 rounded-full object-cover border-4 border-white/20" />
           </div>
         )}
         <h1 className="text-xl font-bold leading-tight mb-1">{personalInfo.fullName || 'Your Name'}</h1>

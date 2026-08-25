@@ -4,18 +4,14 @@ import { Plus, Trash2, ChevronDown, ChevronUp } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { useCVStore } from '@/store/cvStore';
-import type { CVSection, EducationItem } from '@shared/types/cv';
+import type { EducationItem } from '@shared/types/cv';
 
-export function EducationPanel({ section }: { section?: CVSection }) {
+export function EducationPanel() {
   const { t } = useTranslation();
-  const { updateSection } = useCVStore();
+  const { data, updateEducation } = useCVStore();
   const [openIdx, setOpenIdx] = useState<number | null>(0);
 
-  const items: EducationItem[] = (section?.items as EducationItem[]) || [];
-
-  const update = (newItems: EducationItem[]) => {
-    if (section) updateSection(section.id, { items: newItems });
-  };
+  const items: EducationItem[] = data?.education || [];
 
   const addItem = () => {
     const item: EducationItem = {
@@ -29,13 +25,13 @@ export function EducationPanel({ section }: { section?: CVSection }) {
       gpa: '',
       description: '',
     };
-    update([...items, item]);
+    updateEducation([...items, item]);
     setOpenIdx(items.length);
   };
 
-  const removeItem = (idx: number) => { update(items.filter((_, i) => i !== idx)); setOpenIdx(null); };
+  const removeItem = (idx: number) => { updateEducation(items.filter((_, i) => i !== idx)); setOpenIdx(null); };
   const updateItem = (idx: number, patch: Partial<EducationItem>) =>
-    update(items.map((it, i) => i === idx ? { ...it, ...patch } : it));
+    updateEducation(items.map((it, i) => i === idx ? { ...it, ...patch } : it));
 
   return (
     <div className="space-y-4">
