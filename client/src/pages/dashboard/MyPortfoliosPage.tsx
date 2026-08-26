@@ -135,7 +135,7 @@ export default function MyPortfoliosPage() {
 
   const { data, isLoading } = useQuery({
     queryKey: ['my-portfolios'],
-    queryFn: () => api.get<{ portfolios: Portfolio[]; total: number }>('/portfolio'),
+    queryFn: () => api.get<Portfolio[]>('/portfolio'),
   });
 
   const deleteMutation = useMutation({
@@ -176,9 +176,9 @@ export default function MyPortfoliosPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} className="h-44 rounded-2xl" />)}
           </div>
-        ) : data?.portfolios?.length ? (
+        ) : data?.length ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {data.portfolios.map((p) => (
+            {data.map((p) => (
               <PortfolioCard
                 key={p.id}
                 portfolio={p}

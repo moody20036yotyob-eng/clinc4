@@ -37,7 +37,7 @@ function timeAgo(date: string) {
 interface CV {
   id: string;
   title: string;
-  templateSlug: string;
+  template: { slug: string };
   updatedAt: string;
   isPublic: boolean;
 }
@@ -58,7 +58,7 @@ function CVCard({ cv, onDelete, onDuplicate }: { cv: CV; onDelete: (id: string) 
             {t('dashboard.updated')} {timeAgo(cv.updatedAt)}
           </p>
           <div className="flex items-center gap-2 mt-2">
-            <Badge variant="surface">{cv.templateSlug}</Badge>
+            <Badge variant="surface">{cv.template?.slug}</Badge>
           </div>
         </div>
         <div className="relative">
@@ -120,7 +120,7 @@ export default function MyCVsPage() {
 
   const { data, isLoading } = useQuery({
     queryKey: ['my-cvs'],
-    queryFn: () => api.get<{ cvs: CV[]; total: number }>('/cv'),
+    queryFn: () => api.get<CV[]>('/cv'),
   });
 
   const deleteMutation = useMutation({
@@ -160,9 +160,9 @@ export default function MyCVsPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} className="h-44 rounded-2xl" />)}
           </div>
-        ) : data?.cvs?.length ? (
+        ) : data?.length ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {data.cvs.map((cv) => (
+            {data.map((cv) => (
               <CVCard
                 key={cv.id}
                 cv={cv}

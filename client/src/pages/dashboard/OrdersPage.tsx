@@ -27,7 +27,7 @@ export default function OrdersPage() {
 
   const { data, isLoading } = useQuery({
     queryKey: ['my-orders'],
-    queryFn: () => api.get<{ orders: Order[]; total: number }>('/orders'),
+    queryFn: () => api.get<Order[]>('/orders'),
   });
 
   return (
@@ -42,9 +42,9 @@ export default function OrdersPage() {
           <div className="space-y-3">
             {Array.from({ length: 5 }).map((_, i) => <Skeleton key={i} className="h-20 rounded-2xl" />)}
           </div>
-        ) : data?.orders?.length ? (
+        ) : data?.length ? (
           <div className="space-y-3">
-            {data.orders.map((order) => {
+            {data.map((order) => {
               const config = STATUS_CONFIG[order.status] ?? STATUS_CONFIG.PENDING;
               const Icon = config.icon;
               return (

@@ -30,17 +30,17 @@ export default function DashboardPage() {
 
   const { data: cvs, isLoading: cvsLoading } = useQuery({
     queryKey: ['my-cvs'],
-    queryFn: () => api.get<{ cvs: any[]; total: number }>('/cv'),
+    queryFn: () => api.get<any[]>('/cv'),
   });
 
   const { data: portfolios, isLoading: portfoliosLoading } = useQuery({
     queryKey: ['my-portfolios'],
-    queryFn: () => api.get<{ portfolios: any[]; total: number }>('/portfolio'),
+    queryFn: () => api.get<any[]>('/portfolio'),
   });
 
   const { data: orders, isLoading: ordersLoading } = useQuery({
     queryKey: ['my-orders'],
-    queryFn: () => api.get<{ orders: any[]; total: number }>('/orders'),
+    queryFn: () => api.get<any[]>('/orders'),
   });
 
   const isLoading = cvsLoading || portfoliosLoading || ordersLoading;
@@ -61,9 +61,9 @@ export default function DashboardPage() {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
-            <StatCard icon={FileText} label={t('dashboard.myCVs')} value={cvs?.total ?? 0} href="/dashboard/cvs" color="bg-brand-600" />
-            <StatCard icon={LayoutTemplate} label={t('dashboard.myPortfolios')} value={portfolios?.total ?? 0} href="/dashboard/portfolios" color="bg-accent-600" />
-            <StatCard icon={ShoppingBag} label={t('dashboard.myOrders')} value={orders?.total ?? 0} href="/dashboard/orders" color="bg-success-600" />
+            <StatCard icon={FileText} label={t('dashboard.myCVs')} value={cvs?.length ?? 0} href="/dashboard/cvs" color="bg-brand-600" />
+            <StatCard icon={LayoutTemplate} label={t('dashboard.myPortfolios')} value={portfolios?.length ?? 0} href="/dashboard/portfolios" color="bg-accent-600" />
+            <StatCard icon={ShoppingBag} label={t('dashboard.myOrders')} value={orders?.length ?? 0} href="/dashboard/orders" color="bg-success-600" />
           </div>
         )}
 
