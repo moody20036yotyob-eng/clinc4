@@ -92,7 +92,7 @@ adminRouter.get('/users', async (req, res, next) => {
   }
 });
 
-adminRouter.patch('/users/:id', async (req, res, next) => {
+const updateUser = async (req: import('express').Request, res: import('express').Response, next: import('express').NextFunction) => {
   try {
     const body = z.object({ isActive: z.boolean().optional(), role: z.enum(['USER', 'ADMIN']).optional() }).parse(req.body);
     const user = await prisma.user.update({
@@ -104,7 +104,9 @@ adminRouter.patch('/users/:id', async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-});
+};
+adminRouter.patch('/users/:id', updateUser);
+adminRouter.put('/users/:id', updateUser);
 
 // Templates - CV
 adminRouter.get('/templates/cv', async (_req, res, next) => {
@@ -141,17 +143,14 @@ adminRouter.post('/templates/cv', async (req, res, next) => {
   }
 });
 
-adminRouter.patch('/templates/cv/:id', async (req, res, next) => {
+const updateCVTemplate = async (req: import('express').Request, res: import('express').Response, next: import('express').NextFunction) => {
   try {
-    const template = await prisma.cVTemplate.update({
-      where: { id: req.params.id },
-      data: req.body,
-    });
+    const template = await prisma.cVTemplate.update({ where: { id: req.params.id }, data: req.body });
     res.json({ success: true, data: template });
-  } catch (err) {
-    next(err);
-  }
-});
+  } catch (err) { next(err); }
+};
+adminRouter.patch('/templates/cv/:id', updateCVTemplate);
+adminRouter.put('/templates/cv/:id', updateCVTemplate);
 
 // Templates - Portfolio
 adminRouter.get('/templates/portfolio', async (_req, res, next) => {
@@ -183,6 +182,15 @@ adminRouter.post('/templates/portfolio', async (req, res, next) => {
   }
 });
 
+const updatePortfolioTemplate = async (req: import('express').Request, res: import('express').Response, next: import('express').NextFunction) => {
+  try {
+    const template = await prisma.portfolioTemplate.update({ where: { id: req.params.id }, data: req.body });
+    res.json({ success: true, data: template });
+  } catch (err) { next(err); }
+};
+adminRouter.patch('/templates/portfolio/:id', updatePortfolioTemplate);
+adminRouter.put('/templates/portfolio/:id', updatePortfolioTemplate);
+
 // Settings
 adminRouter.get('/settings', async (_req, res, next) => {
   try {
@@ -195,15 +203,19 @@ adminRouter.get('/settings', async (_req, res, next) => {
 
 adminRouter.put('/settings', async (req, res, next) => {
   try {
-    const updates = req.body as Record<string, string>;
-    const operations = Object.entries(updates).map(([key, value]) =>
-      prisma.setting.upsert({
-        where: { key },
-        create: { key, value },
-        update: { value },
-      }),
+    // Accept either { key, value } or Record<string, string>
+    const body = req.body as { key?: string; value?: string } & Record<string, string>;
+    let pairs: [string, string][] = [];
+    if (body.key && body.value !== undefined) {
+      pairs = [[body.key, body.value]];
+    } else {
+      pairs = Object.entries(body).filter(([k]) => !['key', 'value'].includes(k));
+    }
+    await Promise.all(
+      pairs.map(([key, value]) =>
+        prisma.setting.upsert({ where: { key }, create: { key, value }, update: { value } }),
+      ),
     );
-    await Promise.all(operations);
     res.json({ success: true, message: 'Settings updated' });
   } catch (err) {
     next(err);
@@ -238,6 +250,28 @@ adminRouter.post('/coupons', async (req, res, next) => {
       },
     });
     res.status(201).json({ success: true, data: coupon });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// Orders list
+adminRouter.get('/orders', async (req, res, next) => {
+  try {
+    const { page = '1', limit = '20', status } = req.query as Record<string, string>;
+    const p = parseInt(page), l = Math.min(parseInt(limit), 100);
+    const where = status && status !== 'ALL' ? { status: status as 'PENDING' | 'PAID' | 'FAILED' | 'REFUNDED' | 'CANCELLED' } : {};
+    const [orders, total] = await Promise.all([
+      prisma.order.findMany({
+        where,
+        orderBy: { createdAt: 'desc' },
+        skip: (p - 1) * l,
+        take: l,
+        include: { user: { select: { email: true, name: true } } },
+      }),
+      prisma.order.count({ where }),
+    ]);
+    res.json({ success: true, data: { items: orders, total, page: p, limit: l, totalPages: Math.ceil(total / l) } });
   } catch (err) {
     next(err);
   }
