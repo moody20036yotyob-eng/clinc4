@@ -63,9 +63,9 @@ paymentsRouter.post('/webhook', async (req, res, next) => {
         });
 
         const order = await tx.order.findUnique({ where: { id: result.orderId } });
-        if (order && (order.productType === 'PORTFOLIO' || order.productType === 'BUNDLE')) {
-          // Create 1-year hosting if portfolio exists
-          if (order.portfolioId) {
+        if (order && order.portfolioId) {
+          if (order.productType === 'PORTFOLIO' || order.productType === 'BUNDLE') {
+            // Create 1-year hosting subscription on initial portfolio/bundle purchase
             const renewalPrice = await tx.setting.findUnique({ where: { key: 'hosting_renewal_price' } });
             await tx.hostingSubscription.upsert({
               where: { portfolioId: order.portfolioId },
@@ -78,6 +78,26 @@ paymentsRouter.post('/webhook', async (req, res, next) => {
               },
               update: {
                 expiryDate: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
+                status: 'ACTIVE',
+              },
+            });
+          } else if (order.productType === 'HOSTING_RENEWAL') {
+            // Extend hosting by 1 year from today (or from current expiry if still active)
+            const existing = await tx.hostingSubscription.findUnique({ where: { portfolioId: order.portfolioId } });
+            const baseDate = existing && existing.status === 'ACTIVE' && existing.expiryDate > new Date()
+              ? existing.expiryDate
+              : new Date();
+            await tx.hostingSubscription.upsert({
+              where: { portfolioId: order.portfolioId },
+              create: {
+                portfolioId: order.portfolioId,
+                startDate: new Date(),
+                expiryDate: new Date(baseDate.getTime() + 365 * 24 * 60 * 60 * 1000),
+                status: 'ACTIVE',
+                renewalPrice: order.amount as unknown as number,
+              },
+              update: {
+                expiryDate: new Date(baseDate.getTime() + 365 * 24 * 60 * 60 * 1000),
                 status: 'ACTIVE',
               },
             });

@@ -89,3 +89,36 @@ ordersRouter.post('/', async (req: AuthRequest, res, next) => {
     next(err);
   }
 });
+
+// Hosting renewal order
+ordersRouter.post('/hosting-renewal', async (req: AuthRequest, res, next) => {
+  try {
+    const body = z.object({ portfolioId: z.string() }).parse(req.body);
+
+    const portfolio = await prisma.portfolio.findFirst({
+      where: { id: body.portfolioId, userId: req.user!.id },
+      include: { hostingSubscription: true },
+    });
+    if (!portfolio) throw new AppError('Portfolio not found', 404);
+
+    const renewalSetting = await prisma.setting.findUnique({ where: { key: 'hosting_renewal_price' } });
+    const amount = renewalSetting ? parseFloat(renewalSetting.value) : 79;
+
+    const orderNumber = `ECO-HOST-${Date.now()}-${Math.random().toString(36).slice(2, 5).toUpperCase()}`;
+    const order = await prisma.order.create({
+      data: {
+        orderNumber,
+        userId: req.user!.id,
+        productType: 'HOSTING_RENEWAL',
+        amount,
+        status: 'PENDING',
+        paymentStatus: 'PENDING',
+        portfolioId: body.portfolioId,
+      },
+    });
+
+    res.status(201).json({ success: true, data: order });
+  } catch (err) {
+    next(err);
+  }
+});

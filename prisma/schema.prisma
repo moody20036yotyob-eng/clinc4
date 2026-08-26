@@ -263,6 +263,7 @@ enum ProductType {
   CV
   PORTFOLIO
   BUNDLE
+  HOSTING_RENEWAL
 }
 
 enum OrderStatus {

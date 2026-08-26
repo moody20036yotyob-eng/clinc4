@@ -17,6 +17,12 @@ function timeAgo(date: string) {
   return 'just now';
 }
 
+interface HostingSubscription {
+  status: 'ACTIVE' | 'EXPIRED' | 'SUSPENDED';
+  expiryDate: string;
+  renewalPrice: number;
+}
+
 interface Portfolio {
   id: string;
   title: string;
@@ -24,6 +30,7 @@ interface Portfolio {
   templateSlug: string;
   updatedAt: string;
   isPublished: boolean;
+  hostingSubscription: HostingSubscription | null;
 }
 
 function PortfolioCard({ portfolio, onDelete, onTogglePublish }: {
@@ -45,10 +52,18 @@ function PortfolioCard({ portfolio, onDelete, onTogglePublish }: {
           <p className="text-xs text-surface-400 mt-0.5">
             {t('dashboard.updated')} {timeAgo(portfolio.updatedAt)}
           </p>
-          <div className="flex items-center gap-2 mt-2">
+          <div className="flex items-center gap-2 mt-2 flex-wrap">
             <Badge variant={portfolio.isPublished ? 'success' : 'surface'}>
               {portfolio.isPublished ? t('dashboard.published') : t('dashboard.draft')}
             </Badge>
+            {portfolio.hostingSubscription && (
+              <Badge variant={portfolio.hostingSubscription.status === 'ACTIVE' ? 'brand' : 'error'}>
+                {portfolio.hostingSubscription.status === 'ACTIVE'
+                  ? `Hosting · expires ${new Date(portfolio.hostingSubscription.expiryDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}`
+                  : 'Hosting Expired'
+                }
+              </Badge>
+            )}
           </div>
         </div>
         <div className="relative">
