@@ -62,13 +62,11 @@ interface AdminUser {
   email: string;
   role: string;
   createdAt: string;
-  cvCount: number;
-  portfolioCount: number;
   isActive: boolean;
 }
 
 interface AdminUsersResponse {
-  users: AdminUser[];
+  items: AdminUser[];
   total: number;
   page: number;
   totalPages: number;
@@ -138,13 +136,11 @@ function AdminUsersPage() {
                   <th className="px-4 py-3 text-left font-medium text-surface-600">Email</th>
                   <th className="px-4 py-3 text-left font-medium text-surface-600">Role</th>
                   <th className="px-4 py-3 text-left font-medium text-surface-600">Joined</th>
-                  <th className="px-4 py-3 text-center font-medium text-surface-600">CVs</th>
-                  <th className="px-4 py-3 text-center font-medium text-surface-600">Portfolios</th>
                   <th className="px-4 py-3 text-right font-medium text-surface-600">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-surface-100">
-                {data?.users?.map((user) => (
+                {data?.items?.map((user) => (
                   <tr key={user.id} className="hover:bg-surface-50 transition-colors">
                     <td className="px-4 py-3 font-medium text-surface-900">{user.name || '—'}</td>
                     <td className="px-4 py-3 text-surface-600">{user.email}</td>
@@ -159,8 +155,6 @@ function AdminUsersPage() {
                     <td className="px-4 py-3 text-surface-500 text-xs">
                       {user.createdAt ? new Date(user.createdAt).toLocaleDateString() : '—'}
                     </td>
-                    <td className="px-4 py-3 text-center text-surface-700">{user.cvCount ?? 0}</td>
-                    <td className="px-4 py-3 text-center text-surface-700">{user.portfolioCount ?? 0}</td>
                     <td className="px-4 py-3">
                       <div className="flex items-center justify-end gap-2">
                         <button
@@ -188,7 +182,7 @@ function AdminUsersPage() {
                 ))}
               </tbody>
             </table>
-            {!data?.users?.length && (
+            {!data?.items?.length && (
               <div className="py-12 text-center text-surface-400">No users found.</div>
             )}
           </div>
@@ -229,17 +223,10 @@ interface AdminTemplate {
   id: string;
   name: string;
   category: string;
-  usesCount: number;
+  useCount: number;
   isFeatured: boolean;
   isActive: boolean;
   previewImage?: string;
-}
-
-interface AdminTemplatesResponse {
-  templates: AdminTemplate[];
-  total: number;
-  page: number;
-  totalPages: number;
 }
 
 function AdminTemplatesPage() {
@@ -250,7 +237,7 @@ function AdminTemplatesPage() {
   const { data, isLoading, isError } = useQuery({
     queryKey: ['admin-templates', tab, page],
     queryFn: () =>
-      api.get<AdminTemplatesResponse>(`/admin/templates/${tab}?page=${page}&limit=20`),
+      api.get<AdminTemplate[]>(`/admin/templates/${tab}?page=${page}&limit=20`),
   });
 
   const toggleFeatured = useMutation({
@@ -311,7 +298,7 @@ function AdminTemplatesPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-surface-100">
-                {data?.templates?.map((tpl) => (
+                {data?.map((tpl) => (
                   <tr key={tpl.id} className="hover:bg-surface-50 transition-colors">
                     <td className="px-4 py-3">
                       {tpl.previewImage ? (
@@ -324,7 +311,7 @@ function AdminTemplatesPage() {
                     </td>
                     <td className="px-4 py-3 font-medium text-surface-900">{tpl.name}</td>
                     <td className="px-4 py-3 text-surface-500">{tpl.category || '—'}</td>
-                    <td className="px-4 py-3 text-center text-surface-700">{tpl.usesCount ?? 0}</td>
+                    <td className="px-4 py-3 text-center text-surface-700">{tpl.useCount ?? 0}</td>
                     <td className="px-4 py-3 text-center">
                       <button
                         onClick={() => toggleFeatured.mutate({ id: tpl.id, isFeatured: tpl.isFeatured })}
@@ -359,35 +346,11 @@ function AdminTemplatesPage() {
                 ))}
               </tbody>
             </table>
-            {!data?.templates?.length && (
+            {!data?.length && (
               <div className="py-12 text-center text-surface-400">No templates found.</div>
             )}
           </div>
 
-          {/* Pagination */}
-          {(data?.totalPages ?? 1) > 1 && (
-            <div className="flex items-center justify-between mt-4 text-sm">
-              <span className="text-surface-500">
-                Page {data?.page} of {data?.totalPages}
-              </span>
-              <div className="flex gap-2">
-                <button
-                  onClick={() => setPage((p) => Math.max(1, p - 1))}
-                  disabled={page <= 1}
-                  className="px-3 py-1.5 rounded-lg border border-surface-200 hover:bg-surface-50 disabled:opacity-40"
-                >
-                  Prev
-                </button>
-                <button
-                  onClick={() => setPage((p) => p + 1)}
-                  disabled={page >= (data?.totalPages ?? 1)}
-                  className="px-3 py-1.5 rounded-lg border border-surface-200 hover:bg-surface-50 disabled:opacity-40"
-                >
-                  Next
-                </button>
-              </div>
-            </div>
-          )}
         </>
       )}
     </div>
@@ -398,7 +361,7 @@ function AdminTemplatesPage() {
 
 interface AdminOrder {
   id: string;
-  userEmail: string;
+  user: { email: string };
   productType: string;
   amount: number;
   status: string;
@@ -406,7 +369,7 @@ interface AdminOrder {
 }
 
 interface AdminOrdersResponse {
-  orders: AdminOrder[];
+  items: AdminOrder[];
   total: number;
   page: number;
   totalPages: number;
@@ -481,12 +444,12 @@ function AdminOrdersPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-surface-100">
-                {data?.orders?.map((order) => (
+                {data?.items?.map((order) => (
                   <tr key={order.id} className="hover:bg-surface-50 transition-colors">
                     <td className="px-4 py-3 font-mono text-xs text-surface-500">
                       #{order.id.slice(-8).toUpperCase()}
                     </td>
-                    <td className="px-4 py-3 text-surface-700">{order.userEmail}</td>
+                    <td className="px-4 py-3 text-surface-700">{order.user?.email}</td>
                     <td className="px-4 py-3 text-surface-600">{order.productType}</td>
                     <td className="px-4 py-3 text-right font-medium text-surface-900">
                       {(order.amount ?? 0).toFixed(2)}
@@ -506,7 +469,7 @@ function AdminOrdersPage() {
                 ))}
               </tbody>
             </table>
-            {!data?.orders?.length && (
+            {!data?.items?.length && (
               <div className="py-12 text-center text-surface-400">No orders found.</div>
             )}
           </div>
@@ -546,39 +509,40 @@ function AdminOrdersPage() {
 interface AdminCoupon {
   id: string;
   code: string;
-  discountPercent: number;
-  maxUses: number;
-  usesCount: number;
+  type: 'PERCENTAGE' | 'FIXED';
+  value: number;
+  maxUses: number | null;
+  usedCount: number;
   isActive: boolean;
 }
 
 interface CreateCouponForm {
   code: string;
-  discountPercent: number;
+  type: 'PERCENTAGE' | 'FIXED';
+  value: number;
   maxUses: number;
-  isActive: boolean;
 }
 
 function AdminCouponsPage() {
   const qc = useQueryClient();
   const [form, setForm] = useState<CreateCouponForm>({
     code: '',
-    discountPercent: 10,
+    type: 'PERCENTAGE',
+    value: 10,
     maxUses: 100,
-    isActive: true,
   });
   const [formError, setFormError] = useState('');
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ['admin-coupons'],
-    queryFn: () => api.get<{ coupons: AdminCoupon[] }>('/admin/coupons'),
+    queryFn: () => api.get<AdminCoupon[]>('/admin/coupons'),
   });
 
   const createCoupon = useMutation({
     mutationFn: (payload: CreateCouponForm) => api.post('/admin/coupons', payload),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['admin-coupons'] });
-      setForm({ code: '', discountPercent: 10, maxUses: 100, isActive: true });
+      setForm({ code: '', type: 'PERCENTAGE', value: 10, maxUses: 100 });
       setFormError('');
     },
     onError: (err: any) => {
@@ -589,7 +553,8 @@ function AdminCouponsPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.code.trim()) return setFormError('Code is required.');
-    if (form.discountPercent < 1 || form.discountPercent > 100) return setFormError('Discount must be 1–100.');
+    if (form.value <= 0) return setFormError('Value must be positive.');
+    if (form.type === 'PERCENTAGE' && form.value > 100) return setFormError('Percentage must be 1–100.');
     if (form.maxUses < 1) return setFormError('Max uses must be at least 1.');
     setFormError('');
     createCoupon.mutate(form);
@@ -620,16 +585,16 @@ function AdminCouponsPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-surface-100">
-                  {data?.coupons?.map((coupon) => (
+                  {data?.map((coupon) => (
                     <tr key={coupon.id} className="hover:bg-surface-50 transition-colors">
                       <td className="px-4 py-3 font-mono font-semibold text-surface-900 tracking-wider">
                         {coupon.code}
                       </td>
                       <td className="px-4 py-3 text-center text-surface-700 font-medium">
-                        {coupon.discountPercent}%
+                        {coupon.type === 'PERCENTAGE' ? `${coupon.value}%` : `${coupon.value} SAR`}
                       </td>
                       <td className="px-4 py-3 text-center text-surface-600">
-                        {coupon.usesCount ?? 0} / {coupon.maxUses}
+                        {coupon.usedCount ?? 0} / {coupon.maxUses ?? '∞'}
                       </td>
                       <td className="px-4 py-3 text-center">
                         <span className={cn(
@@ -643,7 +608,7 @@ function AdminCouponsPage() {
                   ))}
                 </tbody>
               </table>
-              {!data?.coupons?.length && (
+              {!data?.length && (
                 <div className="py-12 text-center text-surface-400">No coupons yet.</div>
               )}
             </div>
@@ -667,13 +632,26 @@ function AdminCouponsPage() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-surface-700 mb-1">Discount %</label>
+                <label className="block text-sm font-medium text-surface-700 mb-1">Type</label>
+                <select
+                  value={form.type}
+                  onChange={(e) => setForm((f) => ({ ...f, type: e.target.value as 'PERCENTAGE' | 'FIXED' }))}
+                  className="input w-full"
+                >
+                  <option value="PERCENTAGE">Percentage (%)</option>
+                  <option value="FIXED">Fixed (SAR)</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-surface-700 mb-1">
+                  {form.type === 'PERCENTAGE' ? 'Discount %' : 'Discount Amount (SAR)'}
+                </label>
                 <input
                   type="number"
                   min={1}
-                  max={100}
-                  value={form.discountPercent}
-                  onChange={(e) => setForm((f) => ({ ...f, discountPercent: Number(e.target.value) }))}
+                  max={form.type === 'PERCENTAGE' ? 100 : undefined}
+                  value={form.value}
+                  onChange={(e) => setForm((f) => ({ ...f, value: Number(e.target.value) }))}
                   className="input w-full"
                   required
                 />
@@ -688,22 +666,6 @@ function AdminCouponsPage() {
                   className="input w-full"
                   required
                 />
-              </div>
-              <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => setForm((f) => ({ ...f, isActive: !f.isActive }))}
-                  className={cn(
-                    'w-10 h-5 rounded-full transition-colors relative shrink-0',
-                    form.isActive ? 'bg-brand-500' : 'bg-surface-200'
-                  )}
-                >
-                  <span className={cn(
-                    'absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform',
-                    form.isActive && 'translate-x-5'
-                  )} />
-                </button>
-                <span className="text-sm text-surface-700">Active</span>
               </div>
 
               {formError && (
@@ -787,7 +749,7 @@ function AdminSettingsPage() {
   const { t } = useTranslation();
   const { data, isLoading } = useQuery({
     queryKey: ['admin-settings'],
-    queryFn: () => api.get<{ settings: Array<{ key: string; value: string; label: string }> }>('/admin/settings'),
+    queryFn: () => api.get<Array<{ key: string; value: string; label?: string }>>('/admin/settings'),
   });
 
   return (
@@ -799,7 +761,7 @@ function AdminSettingsPage() {
         </div>
       ) : (
         <div className="space-y-4 max-w-2xl">
-          {data?.settings?.map((setting) => (
+          {data?.map((setting) => (
             <div key={setting.key} className="bg-white rounded-xl border border-surface-200 p-4 flex items-center gap-4">
               <div className="flex-1">
                 <label className="text-sm font-medium text-surface-900">{setting.label || setting.key}</label>

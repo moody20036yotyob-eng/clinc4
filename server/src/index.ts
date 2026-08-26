@@ -16,6 +16,7 @@ import { uploadRouter } from './routes/upload';
 import { settingsRouter } from './routes/settings';
 import { analyticsRouter } from './routes/analytics';
 import { sitemapRouter } from './routes/sitemap';
+import { startHostingExpiryJob } from './jobs/hostingExpiryJob';
 import { errorHandler } from './middleware/errorHandler';
 import { rateLimiter } from './middleware/rateLimiter';
 import { requestLogger } from './middleware/requestLogger';
@@ -98,6 +99,7 @@ app.use(errorHandler);
 app.listen(PORT, () => {
   console.log(`🚀 EcoTrove API running on port ${PORT}`);
   console.log(`   Environment: ${process.env.NODE_ENV || 'development'}`);
+  startHostingExpiryJob();
 });
 
 export default app;
