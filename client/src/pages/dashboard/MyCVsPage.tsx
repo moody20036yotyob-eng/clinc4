@@ -8,6 +8,21 @@ import { Skeleton } from '@/components/ui/Skeleton';
 import { Badge } from '@/components/ui/Badge';
 import { api } from '@/lib/api';
 import { toast } from '@/components/ui/Toast';
+
+async function downloadCVPdf(cvId: string, title: string) {
+  const token = localStorage.getItem('token') || sessionStorage.getItem('token') || '';
+  const res = await fetch(`/api/cv/${cvId}/pdf`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) throw new Error('PDF generation failed');
+  const blob = await res.blob();
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `${title.replace(/[^a-z0-9]/gi, '_')}.pdf`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
 function timeAgo(date: string) {
   const ms = Date.now() - new Date(date).getTime();
   const d = Math.floor(ms / 86400000);
@@ -66,14 +81,15 @@ function CVCard({ cv, onDelete, onDuplicate }: { cv: CV; onDelete: (id: string) 
               >
                 <Copy className="h-4 w-4" /> {t('common.duplicate')}
               </button>
-              <a
-                href={`/api/cv/${cv.id}/pdf`}
-                download
-                className="flex items-center gap-2 px-3 py-2 text-sm text-surface-700 hover:bg-surface-100 rounded-lg"
-                onClick={() => setMenuOpen(false)}
+              <button
+                onClick={() => {
+                  setMenuOpen(false);
+                  downloadCVPdf(cv.id, cv.title).catch(() => toast.error('PDF download failed'));
+                }}
+                className="flex items-center gap-2 w-full px-3 py-2 text-sm text-surface-700 hover:bg-surface-100 rounded-lg"
               >
                 <Download className="h-4 w-4" /> {t('common.download')}
-              </a>
+              </button>
               <div className="h-px bg-surface-100 my-1" />
               <button
                 onClick={() => { onDelete(cv.id); setMenuOpen(false); }}

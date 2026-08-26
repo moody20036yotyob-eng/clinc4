@@ -136,7 +136,11 @@ async function main() {
     { slug: 'clean-split',         name: 'Clean Split',           nameAr: 'قسم نظيف',            category: 'minimal',      isATS: true,                       tags: ['clean','split','two-column','ats'],     order: 89 },
   ];
 
+  const toPascalCase = (slug: string) =>
+    slug.split('-').map((p) => p.charAt(0).toUpperCase() + p.slice(1)).join('');
+
   for (const t of cvTemplates) {
+    const componentName = `CV${toPascalCase(t.slug)}`;
     await prisma.cVTemplate.upsert({
       where: { slug: t.slug },
       update: { name: t.name, nameAr: t.nameAr, category: t.category, tags: t.tags, order: t.order, isATS: t.isATS ?? false, isFeatured: t.isFeatured ?? false, isPremium: t.isPremium ?? false },
@@ -146,6 +150,7 @@ async function main() {
         nameAr: t.nameAr,
         category: t.category,
         description: `Professional ${t.name} CV template`,
+        componentName,
         tags: t.tags,
         order: t.order,
         isATS: t.isATS ?? false,
@@ -213,6 +218,8 @@ async function main() {
   ];
 
   for (const t of portfolioTemplates) {
+    // slug is like 'portfolio-minimal-dark' → component 'PortfolioMinimalDark'
+    const componentName = `Portfolio${toPascalCase(t.slug.replace(/^portfolio-/, ''))}`;
     await prisma.portfolioTemplate.upsert({
       where: { slug: t.slug },
       update: { name: t.name, nameAr: t.nameAr, category: t.category, tags: t.tags, order: t.order, isFeatured: t.isFeatured ?? false, isPremium: t.isPremium ?? false },
@@ -222,6 +229,7 @@ async function main() {
         nameAr: t.nameAr,
         category: t.category,
         description: `Professional ${t.name} portfolio template`,
+        componentName,
         tags: t.tags,
         order: t.order,
         isFeatured: t.isFeatured ?? false,

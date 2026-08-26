@@ -4,6 +4,7 @@ import { prisma } from '../lib/prisma';
 import { authenticate, AuthRequest } from '../middleware/authenticate';
 import { AppError } from '../middleware/errorHandler';
 import { v4 as uuid } from 'uuid';
+import { generateCVPdf } from '../services/pdf';
 
 export const cvRouter = Router();
 
@@ -180,6 +181,30 @@ cvRouter.get('/:id/versions', async (req: AuthRequest, res, next) => {
       take: 20,
     });
     res.json({ success: true, data: versions });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// Download CV as PDF
+cvRouter.get('/:id/pdf', async (req: AuthRequest, res, next) => {
+  try {
+    const cv = await prisma.cV.findFirst({
+      where: { id: req.params.id, userId: req.user!.id },
+      include: { template: true },
+    });
+    if (!cv) throw new AppError('CV not found', 404);
+
+    const authHeader = req.headers.authorization;
+    const token = authHeader?.replace('Bearer ', '') || '';
+
+    const pdfBuffer = await generateCVPdf(req.params.id, token);
+
+    const filename = `${cv.title?.replace(/[^a-z0-9]/gi, '_') || 'cv'}.pdf`;
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    res.setHeader('Content-Length', pdfBuffer.length);
+    res.end(pdfBuffer);
   } catch (err) {
     next(err);
   }

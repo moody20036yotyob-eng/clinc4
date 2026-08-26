@@ -30,6 +30,7 @@ const ProfilePage = React.lazy(() => import('@/pages/dashboard/ProfilePage'));
 // Editors
 const CVEditorPage = React.lazy(() => import('@/pages/editor/CVEditorPage'));
 const PortfolioEditorPage = React.lazy(() => import('@/pages/editor/PortfolioEditorPage'));
+const CVPrintPage = React.lazy(() => import('@/pages/editor/CVPrintPage'));
 
 // Public portfolio
 const PublicPortfolioPage = React.lazy(() => import('@/pages/PublicPortfolioPage'));
@@ -95,6 +96,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
               <Route path="/editor/cv/:id" element={<CVEditorPage />} />
               <Route path="/editor/portfolio/:id" element={<PortfolioEditorPage />} />
             </Route>
+
+            {/* CV print (headless PDF render - no layout chrome) */}
+            <Route path="/cv/:id/print" element={<RequireAuth><CVPrintPage /></RequireAuth>} />
 
             {/* Admin */}
             <Route element={<RequireAdmin><DashboardLayout /></RequireAdmin>}>
