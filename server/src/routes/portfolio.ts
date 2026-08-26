@@ -212,7 +212,17 @@ portfolioRouter.get('/public/:slug', async (req, res, next) => {
       data: { viewCount: { increment: 1 } },
     });
 
-    res.json({ success: true, data: portfolio });
+    res.json({
+      success: true,
+      data: {
+        id: portfolio.id,
+        title: portfolio.title,
+        slug: portfolio.slug,
+        templateSlug: portfolio.template.slug,
+        data: portfolio.data,
+        viewCount: portfolio.viewCount,
+      },
+    });
   } catch (err) {
     next(err);
   }
