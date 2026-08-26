@@ -10,6 +10,9 @@ import '@/styles/globals.css';
 const HomePage = React.lazy(() => import('@/pages/HomePage'));
 const LoginPage = React.lazy(() => import('@/pages/auth/LoginPage'));
 const RegisterPage = React.lazy(() => import('@/pages/auth/RegisterPage'));
+const ForgotPasswordPage = React.lazy(() => import('@/pages/auth/ForgotPasswordPage'));
+const ResetPasswordPage = React.lazy(() => import('@/pages/auth/ResetPasswordPage'));
+const VerifyEmailPage = React.lazy(() => import('@/pages/auth/VerifyEmailPage'));
 const CVTemplatesPage = React.lazy(() => import('@/pages/CVTemplatesPage'));
 const PortfolioTemplatesPage = React.lazy(() => import('@/pages/PortfolioTemplatesPage'));
 const PricingPage = React.lazy(() => import('@/pages/PricingPage'));
@@ -84,6 +87,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             <Route element={<Layout />}>
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
+              <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+              <Route path="/reset-password" element={<ResetPasswordPage />} />
+              <Route path="/verify-email" element={<VerifyEmailPage />} />
             </Route>
 
             {/* Dashboard */}
