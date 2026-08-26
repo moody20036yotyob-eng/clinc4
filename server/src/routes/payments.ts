@@ -4,6 +4,7 @@ import { prisma } from '../lib/prisma';
 import { authenticate, AuthRequest } from '../middleware/authenticate';
 import { AppError } from '../middleware/errorHandler';
 import { createPaymentIntent, verifyPayment } from '../services/payment';
+import { sendPurchaseConfirmationEmail } from '../services/email';
 
 export const paymentsRouter = Router();
 
@@ -62,7 +63,21 @@ paymentsRouter.post('/webhook', async (req, res, next) => {
           data: { status: 'PAID', providerTxId: result.transactionId },
         });
 
-        const order = await tx.order.findUnique({ where: { id: result.orderId } });
+        const order = await tx.order.findUnique({
+          where: { id: result.orderId },
+          include: { user: { select: { email: true, name: true } } },
+        });
+        if (order) {
+          sendPurchaseConfirmationEmail(
+            order.user.email,
+            order.user.name,
+            order.orderNumber,
+            order.productType,
+            Number(order.amount),
+            order.currency,
+          ).catch(() => {});
+        }
+
         if (order && order.portfolioId) {
           if (order.productType === 'PORTFOLIO' || order.productType === 'BUNDLE') {
             // Create 1-year hosting subscription on initial portfolio/bundle purchase

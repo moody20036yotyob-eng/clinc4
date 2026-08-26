@@ -10,7 +10,7 @@ import { api } from '@/lib/api';
 import { toast } from '@/components/ui/Toast';
 
 async function downloadCVPdf(cvId: string, title: string) {
-  const token = localStorage.getItem('token') || sessionStorage.getItem('token') || '';
+  const token = localStorage.getItem('ecotrove_token') || '';
   const res = await fetch(`/api/cv/${cvId}/pdf`, {
     headers: { Authorization: `Bearer ${token}` },
   });
