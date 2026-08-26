@@ -11,6 +11,7 @@ import { useAuthStore } from '@/store/authStore';
 import { api } from '@/lib/api';
 import { useNavigate } from 'react-router-dom';
 import { toast } from '@/components/ui/Toast';
+import { analytics } from '@/lib/analytics';
 import type { PortfolioTemplateInfo } from '@shared/types/api';
 
 const CATEGORIES = ['all', 'developer', 'designer', 'photographer', 'writer', 'business', 'creative', 'minimal', 'agency'];
@@ -71,6 +72,7 @@ export default function PortfolioTemplatesPage() {
   });
 
   const handleUseTemplate = async (template: PortfolioTemplateInfo) => {
+    analytics.templateView(template.slug, 'portfolio');
     if (!isAuthenticated) {
       navigate('/register');
       return;
@@ -80,6 +82,7 @@ export default function PortfolioTemplatesPage() {
       navigate(`/editor/portfolio/${portfolio.id}`);
     } catch (err: any) {
       if (err.code === 'PAYMENT_REQUIRED') {
+        analytics.checkoutStart('PORTFOLIO');
         navigate(`/checkout?product=PORTFOLIO&redirect=/portfolio-templates`);
         return;
       }

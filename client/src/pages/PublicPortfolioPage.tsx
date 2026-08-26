@@ -3,10 +3,12 @@ import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Loader2, AlertCircle } from 'lucide-react';
 import { api } from '@/lib/api';
+import { analytics } from '@/lib/analytics';
 import { PortfolioTemplateRenderer } from '@/components/portfolio/templates/PortfolioTemplateRenderer';
 import type { PortfolioData } from '@shared/types/portfolio';
 
 interface PublicPortfolioResponse {
+  id: string;
   data: PortfolioData;
   templateSlug: string;
   title: string;
@@ -35,6 +37,7 @@ export default function PublicPortfolioPage() {
 
   useEffect(() => {
     if (!data) return;
+    analytics.portfolioView(data.id, slug!);
     const { personal } = data.data;
     const name = personal?.name || data.title;
     const title = personal?.title || '';

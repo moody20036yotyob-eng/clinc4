@@ -8,8 +8,10 @@ import { Skeleton } from '@/components/ui/Skeleton';
 import { Badge } from '@/components/ui/Badge';
 import { api } from '@/lib/api';
 import { toast } from '@/components/ui/Toast';
+import { analytics } from '@/lib/analytics';
 
 async function downloadCVPdf(cvId: string, title: string) {
+  analytics.cvDownload(cvId);
   const token = localStorage.getItem('ecotrove_token') || '';
   const res = await fetch(`/api/cv/${cvId}/pdf`, {
     headers: { Authorization: `Bearer ${token}` },

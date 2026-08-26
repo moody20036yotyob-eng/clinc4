@@ -11,6 +11,7 @@ import { useAuthStore } from '@/store/authStore';
 import { api } from '@/lib/api';
 import { useNavigate } from 'react-router-dom';
 import { toast } from '@/components/ui/Toast';
+import { analytics } from '@/lib/analytics';
 import type { CVTemplateInfo } from '@shared/types/api';
 
 const CATEGORIES = ['all', 'professional', 'creative', 'tech', 'executive', 'minimal', 'modern', 'academic', 'arabic'];
@@ -72,6 +73,7 @@ export default function CVTemplatesPage() {
   });
 
   const handleUseTemplate = async (template: CVTemplateInfo) => {
+    analytics.templateView(template.slug, 'cv');
     if (!isAuthenticated) {
       navigate('/register');
       return;
@@ -81,6 +83,7 @@ export default function CVTemplatesPage() {
       navigate(`/editor/cv/${cv.id}`);
     } catch (err: any) {
       if (err.code === 'PAYMENT_REQUIRED') {
+        analytics.checkoutStart('CV');
         navigate(`/checkout?product=CV&redirect=/cv-templates`);
         return;
       }
