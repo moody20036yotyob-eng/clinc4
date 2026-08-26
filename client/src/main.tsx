@@ -32,6 +32,10 @@ const CVEditorPage = React.lazy(() => import('@/pages/editor/CVEditorPage'));
 const PortfolioEditorPage = React.lazy(() => import('@/pages/editor/PortfolioEditorPage'));
 const CVPrintPage = React.lazy(() => import('@/pages/editor/CVPrintPage'));
 
+// Checkout
+const CheckoutPage = React.lazy(() => import('@/pages/CheckoutPage'));
+const PaymentCallbackPage = React.lazy(() => import('@/pages/PaymentCallbackPage'));
+
 // Public portfolio
 const PublicPortfolioPage = React.lazy(() => import('@/pages/PublicPortfolioPage'));
 
@@ -99,6 +103,10 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 
             {/* CV print (headless PDF render - no layout chrome) */}
             <Route path="/cv/:id/print" element={<RequireAuth><CVPrintPage /></RequireAuth>} />
+
+            {/* Checkout (auth required) */}
+            <Route path="/checkout" element={<RequireAuth><CheckoutPage /></RequireAuth>} />
+            <Route path="/checkout/callback" element={<RequireAuth><PaymentCallbackPage /></RequireAuth>} />
 
             {/* Admin */}
             <Route element={<RequireAdmin><DashboardLayout /></RequireAdmin>}>

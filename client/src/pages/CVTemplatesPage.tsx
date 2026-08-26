@@ -80,6 +80,10 @@ export default function CVTemplatesPage() {
       const cv = await api.post<{ id: string }>('/cv', { templateSlug: template.slug, title: template.name });
       navigate(`/editor/cv/${cv.id}`);
     } catch (err: any) {
+      if (err.code === 'PAYMENT_REQUIRED') {
+        navigate(`/checkout?product=CV&redirect=/cv-templates`);
+        return;
+      }
       toast.error(err.message || t('common.error'));
     }
   };

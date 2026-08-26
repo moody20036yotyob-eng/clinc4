@@ -90,6 +90,44 @@ ordersRouter.post('/', async (req: AuthRequest, res, next) => {
   }
 });
 
+// Coupon validation (pre-checkout)
+ordersRouter.post('/validate-coupon', async (req: AuthRequest, res, next) => {
+  try {
+    const body = z.object({
+      code: z.string(),
+      productType: z.enum(['CV', 'PORTFOLIO', 'BUNDLE']),
+    }).parse(req.body);
+
+    const coupon = await prisma.coupon.findUnique({
+      where: { code: body.code, isActive: true },
+    });
+
+    if (!coupon) {
+      return res.json({ valid: false, message: 'Invalid or expired coupon' });
+    }
+    if (coupon.expiresAt && coupon.expiresAt < new Date()) {
+      return res.json({ valid: false, message: 'Coupon has expired' });
+    }
+    if (coupon.maxUses && coupon.usedCount >= coupon.maxUses) {
+      return res.json({ valid: false, message: 'Coupon usage limit reached' });
+    }
+    if (coupon.applicableTo && coupon.applicableTo !== body.productType) {
+      return res.json({ valid: false, message: `Coupon only applies to ${coupon.applicableTo}` });
+    }
+
+    const pricing = await getPricing();
+    const base = pricing[body.productType.toLowerCase() as 'cv' | 'portfolio' | 'bundle'];
+    const discount = coupon.type === 'PERCENTAGE'
+      ? base * (Number(coupon.value) / 100)
+      : Number(coupon.value);
+    const discountedAmount = Math.max(0, base - discount);
+
+    res.json({ valid: true, discountedAmount });
+  } catch (err) {
+    next(err);
+  }
+});
+
 // Hosting renewal order
 ordersRouter.post('/hosting-renewal', async (req: AuthRequest, res, next) => {
   try {

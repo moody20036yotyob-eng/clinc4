@@ -79,6 +79,10 @@ export default function PortfolioTemplatesPage() {
       const portfolio = await api.post<{ id: string }>('/portfolio', { templateSlug: template.slug, title: template.name });
       navigate(`/editor/portfolio/${portfolio.id}`);
     } catch (err: any) {
+      if (err.code === 'PAYMENT_REQUIRED') {
+        navigate(`/checkout?product=PORTFOLIO&redirect=/portfolio-templates`);
+        return;
+      }
       toast.error(err.message || t('common.error'));
     }
   };
