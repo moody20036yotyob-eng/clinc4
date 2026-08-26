@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useQuery } from '@tanstack/react-query';
-import { Save, Eye, Globe, EyeOff, Loader2, ChevronLeft, Monitor, Tablet, Smartphone } from 'lucide-react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { Save, Globe, Loader2, ChevronLeft, Monitor, Tablet, Smartphone, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { usePortfolioStore } from '@/store/portfolioStore';
 import { api } from '@/lib/api';
@@ -12,6 +12,12 @@ import type { PortfolioData } from '@shared/types/portfolio';
 import { PortfolioEditorSidebar } from '@/components/portfolio/editor/PortfolioEditorSidebar';
 import { PortfolioTemplateRenderer } from '@/components/portfolio/templates/PortfolioTemplateRenderer';
 
+interface CVListItem {
+  id: string;
+  title: string;
+  updatedAt: string;
+}
+
 type DeviceView = 'desktop' | 'tablet' | 'mobile';
 
 const DEVICE_WIDTHS: Record<DeviceView, string> = {
@@ -20,12 +26,76 @@ const DEVICE_WIDTHS: Record<DeviceView, string> = {
   mobile: '375px',
 };
 
+function ImportCVModal({ portfolioId, onClose, onImported }: { portfolioId: string; onClose: () => void; onImported: () => void }) {
+  const { t } = useTranslation();
+  const [selectedCvId, setSelectedCvId] = useState('');
+
+  const { data: cvs, isLoading } = useQuery({
+    queryKey: ['cv-list'],
+    queryFn: () => api.get<CVListItem[]>('/cv'),
+  });
+
+  const importMutation = useMutation({
+    mutationFn: (cvId: string) => api.post(`/portfolio/${portfolioId}/import-cv`, { cvId }),
+    onSuccess: () => {
+      toast.success(t('portfolioEditor.importSuccess'));
+      onImported();
+      onClose();
+    },
+    onError: (err: any) => {
+      toast.error(err.message || t('common.error'));
+    },
+  });
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+      <div className="bg-white rounded-xl shadow-2xl w-full max-w-md">
+        <div className="p-6 border-b border-surface-200">
+          <h2 className="text-lg font-semibold text-surface-900">{t('portfolioEditor.importFromCV')}</h2>
+          <p className="text-sm text-surface-500 mt-1">{t('portfolioEditor.importFromCVDesc')}</p>
+        </div>
+        <div className="p-6">
+          {isLoading ? (
+            <div className="flex justify-center py-6"><Loader2 className="h-6 w-6 animate-spin text-brand-500" /></div>
+          ) : !cvs?.length ? (
+            <p className="text-sm text-surface-500 text-center py-6">{t('portfolioEditor.noCVs')}</p>
+          ) : (
+            <div className="space-y-2 max-h-60 overflow-y-auto">
+              {cvs.map((cv) => (
+                <label key={cv.id} className="flex items-center gap-3 p-3 rounded-lg border border-surface-200 cursor-pointer hover:border-brand-400 has-[:checked]:border-brand-500 has-[:checked]:bg-brand-50">
+                  <input type="radio" name="cv" value={cv.id} onChange={() => setSelectedCvId(cv.id)} className="accent-brand-500" />
+                  <div>
+                    <p className="text-sm font-medium text-surface-900">{cv.title}</p>
+                    <p className="text-xs text-surface-400">{new Date(cv.updatedAt).toLocaleDateString()}</p>
+                  </div>
+                </label>
+              ))}
+            </div>
+          )}
+        </div>
+        <div className="flex justify-end gap-3 px-6 pb-6">
+          <Button variant="outline" size="sm" onClick={onClose}>{t('common.cancel')}</Button>
+          <Button
+            size="sm"
+            disabled={!selectedCvId || importMutation.isPending}
+            onClick={() => importMutation.mutate(selectedCvId)}
+          >
+            {importMutation.isPending && <Loader2 className="h-4 w-4 animate-spin me-1.5" />}
+            {t('portfolioEditor.import')}
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function PortfolioEditorPage() {
   const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [deviceView, setDeviceView] = useState<DeviceView>('desktop');
-  const [showPreview, setShowPreview] = useState(true);
+  const [showImportModal, setShowImportModal] = useState(false);
 
   const { data: portfolioData, setPortfolioData, saveStatus, save } = usePortfolioStore();
 
@@ -68,6 +138,15 @@ export default function PortfolioEditorPage() {
 
   return (
     <div className="flex h-screen bg-surface-50 overflow-hidden">
+      {showImportModal && id && (
+        <ImportCVModal
+          portfolioId={id}
+          onClose={() => setShowImportModal(false)}
+          onImported={() => {
+            queryClient.invalidateQueries({ queryKey: ['portfolio', id] });
+          }}
+        />
+      )}
       {/* Sidebar */}
       <aside className="w-72 bg-white border-e border-surface-200 flex flex-col shrink-0">
         <div className="h-14 flex items-center gap-2 px-3 border-b border-surface-200">
@@ -120,6 +199,10 @@ export default function PortfolioEditorPage() {
                 <Globe className="h-4 w-4" /> {t('portfolioEditor.viewLive')}
               </a>
             )}
+            <Button variant="outline" size="sm" onClick={() => setShowImportModal(true)} title={t('portfolioEditor.importFromCV')}>
+              <FileText className="h-4 w-4" />
+              <span className="hidden sm:inline ms-1.5">{t('portfolioEditor.importCV')}</span>
+            </Button>
             <Button variant="outline" size="sm" onClick={() => save(id!)}>
               <Save className="h-4 w-4" />
               <span className="hidden sm:inline ms-1.5">{t('editor.save')}</span>
