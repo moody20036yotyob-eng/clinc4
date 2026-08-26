@@ -15,6 +15,7 @@ import { adminRouter } from './routes/admin';
 import { uploadRouter } from './routes/upload';
 import { settingsRouter } from './routes/settings';
 import { analyticsRouter } from './routes/analytics';
+import { sitemapRouter } from './routes/sitemap';
 import { errorHandler } from './middleware/errorHandler';
 import { rateLimiter } from './middleware/rateLimiter';
 import { requestLogger } from './middleware/requestLogger';
@@ -77,6 +78,9 @@ app.use('/api/admin', adminRouter);
 app.use('/api/upload', uploadRouter);
 app.use('/api/settings', settingsRouter);
 app.use('/api/analytics', analyticsRouter);
+
+// Sitemap and robots
+app.use('/', sitemapRouter);
 
 // Health check
 app.get('/api/health', (_, res) => {
