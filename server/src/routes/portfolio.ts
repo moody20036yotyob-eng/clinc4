@@ -33,7 +33,7 @@ portfolioRouter.get('/:id', async (req: AuthRequest, res, next) => {
       include: { template: true, hostingSubscription: true },
     });
     if (!portfolio) throw new AppError('Portfolio not found', 404);
-    res.json({ success: true, data: portfolio });
+    res.json({ success: true, data: { ...portfolio, templateSlug: portfolio.template.slug } });
   } catch (err) {
     next(err);
   }
@@ -85,6 +85,89 @@ portfolioRouter.post('/', async (req: AuthRequest, res, next) => {
     });
 
     res.status(201).json({ success: true, data: portfolio });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// Import CV data into portfolio (bundle users only)
+portfolioRouter.post('/:id/import-cv', async (req: AuthRequest, res, next) => {
+  try {
+    const body = z.object({ cvId: z.string() }).parse(req.body);
+
+    // Verify user has bundle access
+    const order = await prisma.order.findFirst({
+      where: { userId: req.user!.id, productType: 'BUNDLE', status: 'PAID' },
+    });
+    if (!order) throw new AppError('Bundle purchase required for CV import', 403, 'BUNDLE_REQUIRED');
+
+    const [portfolio, cv] = await Promise.all([
+      prisma.portfolio.findFirst({ where: { id: req.params.id, userId: req.user!.id } }),
+      prisma.cV.findFirst({ where: { id: body.cvId, userId: req.user!.id } }),
+    ]);
+    if (!portfolio) throw new AppError('Portfolio not found', 404);
+    if (!cv) throw new AppError('CV not found', 404);
+
+    const cvData = cv.data as Record<string, unknown>;
+    const personalInfo = cvData['personalInfo'] as Record<string, unknown> | undefined;
+    const skills = (cvData['skills'] as Array<Record<string, unknown>> | undefined) || [];
+    const experience = (cvData['experience'] as Array<Record<string, unknown>> | undefined) || [];
+    const education = (cvData['education'] as Array<Record<string, unknown>> | undefined) || [];
+
+    // Map CV fields to portfolio fields
+    const importedData: Record<string, unknown> = {
+      personal: {
+        name: personalInfo?.['fullName'] || personalInfo?.['name'] || '',
+        nameAr: personalInfo?.['fullNameAr'] || '',
+        title: personalInfo?.['jobTitle'] || personalInfo?.['title'] || '',
+        titleAr: personalInfo?.['jobTitleAr'] || '',
+        bio: personalInfo?.['summary'] || '',
+        photo: personalInfo?.['photo'] || '',
+        email: personalInfo?.['email'] || '',
+        phone: personalInfo?.['phone'] || '',
+        location: personalInfo?.['location'] || '',
+        linkedin: personalInfo?.['linkedin'] || '',
+        github: personalInfo?.['github'] || '',
+        twitter: personalInfo?.['twitter'] || '',
+        website: personalInfo?.['website'] || '',
+      },
+      skills: skills.map((s) => ({
+        id: s['id'],
+        name: s['name'],
+        nameAr: s['nameAr'],
+        category: s['category'],
+        level: s['level'] ? 70 : undefined,
+      })),
+      experience: experience.map((e) => ({
+        id: e['id'],
+        company: e['company'],
+        position: e['position'],
+        startDate: e['startDate'],
+        endDate: e['endDate'],
+        current: e['current'],
+        description: e['description'],
+      })),
+      education: education.map((edu) => ({
+        id: edu['id'],
+        institution: edu['institution'],
+        degree: edu['degree'],
+        field: edu['field'],
+        startDate: edu['startDate'],
+        endDate: edu['endDate'],
+        current: edu['current'],
+      })),
+    };
+
+    const existingData = (portfolio.data as Record<string, unknown>) || {};
+    const merged = { ...existingData, ...importedData };
+
+    const updated = await prisma.portfolio.update({
+      where: { id: req.params.id },
+      data: { data: merged as object },
+      include: { template: true, hostingSubscription: true },
+    });
+
+    res.json({ success: true, data: updated });
   } catch (err) {
     next(err);
   }
